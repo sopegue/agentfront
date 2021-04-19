@@ -102,7 +102,7 @@
           }"
         >
           <div>
-            <label for="request" class="size-14 over"
+            <label for="request" class="size-14"
               >Avez-vous déjà une agence en ligne ?</label
             >
             <br />
