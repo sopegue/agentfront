@@ -828,7 +828,8 @@ export default {
         this.property.data.property.negociable === 'yes' ? ['yes'] : []
 
       this.image =
-        'https://ofalooback.herokuapp.com/storage/' + this.property.data.images[0].url
+        'https://ofalooback.herokuapp.com/storage/' +
+        this.property.data.images[0].url
       for (let index = 0; index < this.property.data.images.length; index++) {
         const img = this.property.data.images[index]
         this.images.push('https://ofalooback.herokuapp.com/storage/' + img.url)

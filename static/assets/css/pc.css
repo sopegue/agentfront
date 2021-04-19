@@ -13,6 +13,9 @@
 .w71px {
   width: 71px !important;
 }
+.w130px {
+  width: 130px !important;
+}
 body,
 html {
   height: 100%;
@@ -1516,7 +1519,7 @@ textarea::placeholder {
 }
 .w-x289 {
   max-width: 320px !important;
-  min-width:  320px !important;
+  min-width: 320px !important;
 }
 @keyframes appearzb {
   0% {

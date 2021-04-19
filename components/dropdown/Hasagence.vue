@@ -5,7 +5,7 @@
       class="dropdowne"
       :class="{ 'is-active': focused }"
     >
-      <div class="">
+      <div class="w130px">
         <client-only>
           <div
             aria-haspopup="true"
