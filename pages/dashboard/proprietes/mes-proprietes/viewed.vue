@@ -351,11 +351,12 @@
                 :title="
                   'Le prix indiqué représente ' +
                   property.data.property.percentage_part +
+                  '%' +
                   ' de la propriété (la part disponible)'
                 "
                 class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
                 >{{ property.data.property.proposition }} ({{
-                  property.data.property.percentage_part
+                  property.data.property.percentage_part + '%'
                 }})</nuxt-link
               >
               <nuxt-link
@@ -373,11 +374,12 @@
                 :title="
                   'Le prix indiqué représente ' +
                   property.data.property.percentage_part +
+                  '%' +
                   ' de la propriété (la part disponible)'
                 "
                 class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
                 >{{ property.data.property.proposition }} ({{
-                  property.data.property.percentage_part
+                  property.data.property.percentage_part + '%'
                 }})</nuxt-link
               >
             </div>
@@ -542,14 +544,18 @@ export default {
       for (let index = 0; index < this.property.data.images.length; index++) {
         const element = this.property.data.images[index]
         if (element.principal === 'yes') {
-          this.images.push('https://ofalooback.herokuapp.com/storage/' + element.url)
+          this.images.push(
+            'https://ofalooback.herokuapp.com/storage/' + element.url
+          )
           break
         }
       }
       for (let index = 0; index < this.property.data.images.length; index++) {
         const element = this.property.data.images[index]
         if (element.principal === 'no')
-          this.images.push('https://ofalooback.herokuapp.com/storage/' + element.url)
+          this.images.push(
+            'https://ofalooback.herokuapp.com/storage/' + element.url
+          )
       }
       this.ades = this.images
     },
