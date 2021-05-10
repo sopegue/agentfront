@@ -29,7 +29,8 @@
               v-show="liverror || noliverror"
               class="size-12 appearZ text-red-700 leading-4 pt-1"
             >
-              Désolé, cette adresse email est déjà utilisée
+              Désolé, cette adresse email est déjà utilisée ou est le même que
+              l'adresse email personnelle
             </p>
           </div>
           <div class="w-full flex align-center space-x-1">
@@ -225,7 +226,7 @@ export default {
       mailtaken: false,
       unphoned: false,
       timestamp: 0,
-
+      reg: null,
       accounting: false,
       princimail: [],
     }
@@ -266,11 +267,10 @@ export default {
   },
   watch: {
     email() {
-      if (this.mailerror || this.livemailtaken || this.mailtaken) {
-        this.maierror = false
-        this.livemailtaken = false
-        this.mailtaken = false
-      }
+      this.livemailtaken = false
+      this.mailtaken = false
+      this.maierror = false
+      if (this.email === this.reg.email) this.mailtaken = true
       if (this.timestamp === 0 || Date.now() - this.timestamp > 200) {
         this.timestamp = Date.now()
         this.pendingmail()
@@ -330,7 +330,8 @@ export default {
       if (taken.status === 'taken') {
         this.mailtaken = true
       } else if (taken.status === 'free') {
-        this.mailtaken = false
+        if (this.email === this.reg.email) this.mailtaken = true
+        else this.mailtaken = false
       } else this.mailtaken = true
     },
     infosValidated() {
@@ -350,7 +351,6 @@ export default {
 
       if (this.phone.length > 0) this.unphoned = false
       else this.unphoned = true
-
       return (
         this.maierror === false &&
         this.mailtaken === false &&
@@ -376,6 +376,8 @@ export default {
       }
       if (!sessionStorage.register_infos) {
         location.replace('/ofalooagent/infos')
+      } else {
+        this.reg = JSON.parse(sessionStorage.getItem('register_infos'))
       }
     },
     save() {

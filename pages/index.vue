@@ -18,6 +18,7 @@ import Footers from '~/components/footer/Footers.vue'
 import Headerhome from '~/components/header/Headerhome.vue'
 export default {
   components: { Footers, Headerhome },
+  middleware: 'noauth',
   data() {
     return {
       scroll: false,
@@ -50,6 +51,9 @@ export default {
     },
   },
   beforeMount() {
+    if (this.$auth.loggedIn) {
+      this.$router.replace('/dashboard')
+    }
     if (!this.curoute.includes('/ofalooagent/infos')) {
       sessionStorage.removeItem('register_email')
       sessionStorage.removeItem('register_infos')
@@ -68,16 +72,30 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
     window.removeEventListener('DOMContentLoaded', this.domload, false)
   },
-  mounted() {
+  async mounted() {
     this.large()
     this.handleScroll()
     this.checkDomload()
     this.scrolltop()
     if (this.curoute === '/') {
-      this.$router.push('/ofalooagent/inscription')
+      this.$router.push('/ofalooagent/connexion')
+    }
+    if (!this.$auth.loggedIn) {
+      if (localStorage.hdzd) {
+        const data = await JSON.parse(localStorage.getItem('hdzd'))
+        this.logoutImmediatly(data)
+      }
     }
   },
   methods: {
+    async logoutImmediatly(data) {
+      await this.$axios
+        .$get('client/logout/notoken/' + data.odzd + '/' + data.scds)
+        .then((res) => {
+          // console.log(res.json())
+          localStorage.removeItem('hdzd')
+        })
+    },
     scrolltop() {
       window.scroll({
         top: 0,

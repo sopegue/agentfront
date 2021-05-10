@@ -1,15 +1,21 @@
 <template>
-  <div class="pt-10">
+  <div class="py-2">
     <div class="w-full flex flex-col">
       <div class="oath-log flex flex-col space-y-10 relative">
+        <!-- <div class="absolute w-full top-0 appearZ rounded-tl rounded-tr">
+          <span
+            class="block rounded-tl rounded-tr text-c bg-green-600 py-3 px-10 text-white font-semibold size-12"
+            >Mot passe réinitialisé avec success √</span
+          >
+        </div> -->
         <div
           class="border bg-white rounded px-5 sm:px-8 py-5 flex flex-col space-y-2"
         >
           <h4 class="text-center size-16 logo-color font-semibold mb-1">
-            Connexion à Ofaloo Agentcenter
+            Connexion à Ofaloo
           </h4>
           <div class="w-full">
-            <label for="username" class="size-13">Email</label>
+            <label for="username" class="size-14">Email</label>
             <br />
             <form @submit.prevent="signin">
               <input
@@ -31,11 +37,11 @@
           </div>
           <div class="w-full">
             <div class="flex align-center justify-between">
-              <label for="pwd" class="size-13">Mot de passe</label>
-              <nuxt-link
-                to="/ofalooagent/pwd-forgotten"
+              <label for="pwd" class="size-14">Mot de passe</label>
+              <a
+                href="/pwd-forgotten"
                 class="color-008489 clickable underline-hover size-13"
-                >Mot de passe oublié ?</nuxt-link
+                >Mot de passe oublié ?</a
               >
             </div>
             <form class="relative flex align-center" @submit.prevent="signin">
@@ -48,7 +54,6 @@
                   'border-red-700': passerror,
                 }"
               />
-              <button></button>
               <button
                 type="button"
                 class="bg-transparent no-outlines absolute right-0 mr-2 logo-color"
@@ -100,25 +105,25 @@
               v-show="passerror"
               class="size-12 appearZ text-red-700 leading-4 pt-1"
             >
-              Veuillez enter un mot de passe
+              Veuillez entrer un mot de passe
             </p>
-            <div v-if="inco" class="w-full top-0 appearZ pt-2">
-              <span
-                class="block rounded border border-red-600 text-red-600 text-c py-1 px-10 text-white font-semibold size-12"
-                >Email et/ou mot de passe incorrects</span
-              >
-            </div>
-            <div v-if="reqerr" class="w-full top-0 appearZ pt-2">
-              <span
-                class="block rounded border border-red-600 text-red-600 text-c py-1 px-10 text-white font-semibold size-12"
-                >Oops désolé, une erreur s'est produite</span
-              >
-            </div>
+          </div>
+          <div v-if="inco" class="w-full top-0 appearZ pt-2">
+            <span
+              class="block rounded border border-red-600 text-red-600 text-c py-1 px-10 text-white font-semibold size-12"
+              >Email et/ou mot de passe incorrects</span
+            >
+          </div>
+          <div v-if="reqerr" class="w-full top-0 appearZ pt-2">
+            <span
+              class="block rounded border border-red-600 text-red-600 text-c py-1 px-10 text-white font-semibold size-12"
+              >Oops désolé, une erreur s'est produite</span
+            >
           </div>
           <a
             class="button block btn-008489 border rounded-md flex align-center space-x-2 relative top-05x bottom-0x"
             :class="{ noclick: isloging }"
-            @click.stop="signin"
+            @click="signin"
           >
             <span
               class="size-13 flex items-center space-x-2 text-white font-semibold"
@@ -132,14 +137,63 @@
               class="flex flex-col sm:flex-row align-center text-center space-x-2 size-13 mt-5"
             >
               <span>Vous n'avez pas de compte?</span>
-              <nuxt-link
-                to="/ofalooagent/inscription"
-                class="color-008489 underline-hover"
-                >Créer un compte</nuxt-link
+              <a href="/inscription" class="color-008489 underline-hover"
+                >Créer un compte</a
               >
             </div>
           </div>
         </div>
+        <!-- <div class="flex flex-col space-y-2">
+          <a
+            href="#"
+            class="button bg-white border rounded-md flex align-center space-x-2"
+            ><svg
+              class="h-5 w-5"
+              viewBox="0 0 533.5 544.3"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
+                fill="#4285f4"
+              />
+              <path
+                d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z"
+                fill="#34a853"
+              />
+              <path
+                d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z"
+                fill="#fbbc04"
+              />
+              <path
+                d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
+                fill="#ea4335"
+              /></svg
+            ><span class="size-14">Se connecter avec Google</span></a
+          >
+          <a
+            href="#"
+            class="button h-full bg-fb border rounded-md flex align-center space-x-2"
+            ><client-only>
+              <span class="mscourse block font-semibold color-363636f"
+                ><client-only
+                  ><svg
+                    class="h-5 w-5 fbvg -mt-012x"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1365.12"
+                    height="1365.12"
+                    viewBox="0 0 14222 14222"
+                  >
+                    <circle cx="7111" cy="7112" r="7111" fill="#4267B2" />
+                    <path
+                      d="M9879 9168l315-2056H8222V5778c0-562 275-1111 1159-1111h897V2917s-814-139-1592-139c-1624 0-2686 984-2686 2767v1567H4194v2056h1806v4969c362 57 733 86 1111 86s749-30 1111-86V9168z"
+                      fill="#fff"
+                    /></svg></client-only></span
+            ></client-only>
+            <span class="size-14 text-white"
+              >Se connecter avec Facebook</span
+            ></a
+          >
+        </div> -->
       </div>
     </div>
   </div>
@@ -163,6 +217,9 @@ export default {
     pwdhidden() {
       return this.pwdhid === true
     },
+    previous() {
+      return this.$store.state.from
+    },
     passerror() {
       return this.pwderr === true
     },
@@ -171,6 +228,9 @@ export default {
     },
     isloging() {
       return this.logging === true
+    },
+    remember() {
+      return this.rememberme === true
     },
     inco() {
       return this.nolog === true
@@ -213,7 +273,7 @@ export default {
             data: {
               email: this.email,
               password: this.pwd,
-              rememberme: true,
+              rememberme: this.remember,
             },
           })
           .then((res) => {
@@ -229,8 +289,7 @@ export default {
                 scds: tokenId,
               }
               localStorage.setItem('hdzd', JSON.stringify(hdzd))
-              console.log('connected')
-              location.assign('/dashboard')
+              history.back()
             }
             if (res.data.status === 404) {
               this.logging = false

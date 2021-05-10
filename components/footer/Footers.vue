@@ -105,14 +105,14 @@
       <div class="w-fit mx-2 flex align-center space-x-1 size-14 text-white">
         <span class="text-white">{{ toyear }}</span>
         <span class="text-white">•</span>
-        <nuxt-link
+        <a
           v-if="!curoute.includes('/dashboard')"
-          to="/"
+          href="/"
           class="w-fit text-white block size-13"
-          >Ofaloo Agentcenter</nuxt-link
+          >Ofaloo Agentcenter</a
         >
-        <nuxt-link v-else to="/dashboard" class="w-fit text-white block size-13"
-          >Ofaloo Agentdashboard</nuxt-link
+        <a v-else href="/dashboard" class="w-fit text-white block size-13"
+          >Ofaloo Agentdashboard</a
         >
       </div>
     </div>

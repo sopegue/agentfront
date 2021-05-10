@@ -4,11 +4,11 @@
       <h4 class="logo-color size-24 font-semibold mb-1">Félicitations</h4>
       <div class="lg:w-3/5 md:w-4/5 w-full mt-3">
         <span
-          >Vos informatons ont été bien enregistrées et sont en cours de
-          vérification. Votre demande sera traité dans un délai de
-          <span class="font-semibold">5 jours ouvrables.</span> Vous serez
-          informé par email du résultat de votre demande pour devenir un agent
-          sur Ofaloo.</span
+          >Votre compte a bien été créé et les informatons fournis seront
+          vérifiées bientôt. Le traitement de votre demande se fera dans un
+          délai de <span class="font-semibold">5 jours ouvrables.</span> Vous
+          serez informé par email du résultat de votre demande pour devenir un
+          agent sur Ofaloo.</span
         >
       </div>
       <div class="mt-3 mb-5">

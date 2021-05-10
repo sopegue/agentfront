@@ -50,10 +50,16 @@
 import Login from '~/components/authentication/Login.vue'
 export default {
   components: { Login },
+  middleware: 'noauth',
   computed: {
     size() {
       return this.$store.state.size
     },
+  },
+  beforeMount() {
+    if (this.$auth.loggedIn) {
+      this.$router.replace('/dashboard')
+    }
   },
   methods: {
     setheight(val) {
@@ -65,7 +71,7 @@ export default {
 
 <style scoped>
 .header-home {
-  background-image: url('https://ofalooback.herokuapp.com/images/4.jpg');
+  background-image: url('/bg/1.jpg');
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center;

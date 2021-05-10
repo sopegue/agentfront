@@ -4,7 +4,6 @@
       v-click-outside="hide"
       class="dropdown"
       :class="{ 'is-active': focused }"
-      @mouseleave="hide"
     >
       <div class="dropdown-trigger">
         <client-only>
@@ -12,11 +11,6 @@
             aria-haspopup="true"
             aria-controls="dropdown-menu"
             class="py-1 bg-white relative border rounded-full clickable select-none mb-1.5"
-            @mouseover="
-              {
-                focused = true
-              }
-            "
             @click="
               {
                 focused = !focused
@@ -30,15 +24,17 @@
                 alt="Placeholder image"
               />
               <div class="flex flex-col">
-                <div class="size-12 color-363636 w-30 over">
-                  yayasopeguesoro@gmail.com
+                <div class="size-13 color-363636 w-30 over">
+                  {{ $auth.user.email }}
                 </div>
-                <div class="size-12 font-semibold logo-color w-30 over">
-                  Yaya Sopegue ferf fze edf
+                <div class="size-14 font-semibold logo-color w-30 over">
+                  {{ $linker.capitalizeEach($auth.user.agence.name) }}
+                  ({{ $linker.capitalizeEach($auth.user.surname) }}
+                  {{ $linker.capitalizeEach($auth.user.name) }})
                 </div>
               </div>
               <svg
-                class="w-4 h-4 relative transform logo-color"
+                class="w-4 h-4 relative transform logo-color right-1.5"
                 :class="{ 'color-008489s rotate-180 trans-x300': focused }"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -59,6 +55,7 @@
           <div class="flex align-center justify-between">
             <span class="size-135 font-semibold dropdown-item">Mon compte</span>
             <nuxt-link
+              v-show="$auth.user.agence.super === 'yes'"
               to="/ofalooagent/guide#superagent"
               class="button bg-transparent mr-4 px-3 py-0.5 rounded border-008489ss size-12 color-008489"
               >Super agent</nuxt-link
@@ -149,12 +146,12 @@
             <span>Paramètres du compte</span></nuxt-link
           >
           <hr class="dropdown-divider" />
-          <nuxt-link to="#" class="block w-fit m-0-auto"
+          <a class="block client w-fit m-0-auto" @click="logout"
             ><button
               class="button is-light ferfe rounded px-20 py-1 text-white size-14"
             >
               Se deconnecter
-            </button></nuxt-link
+            </button></a
           >
         </div>
       </div>
@@ -178,6 +175,13 @@ export default {
   methods: {
     hide() {
       this.focused = false
+    },
+    async logout() {
+      this.hide()
+      await this.$auth.logout().then((res) => {
+        if (localStorage.hdzd) localStorage.removeItem('hdzd')
+        location.reload()
+      })
     },
   },
 }

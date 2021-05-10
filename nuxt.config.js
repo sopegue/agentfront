@@ -1,7 +1,12 @@
 export default {
+  server: {
+    port: 1997, // default: 3000
+  },
+  loading: false,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Ofaloo Agentcenter - Vendre et louer des propriétés sur Ofaloo',
+    title:
+      'Ofaloo Agentcenter - Vendez et mettez en location vos propriétés sur Ofaloo',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -38,21 +43,62 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     'nuxt-windicss',
+    '@nuxtjs/moment',
   ],
-
+  moment: {
+    timezone: true,
+    defaultLocale: 'fr',
+    locales: ['fr'],
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/auth-next',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
   ],
-
+  auth: {
+    plugins: ['@/plugins/auth.js'],
+    localStorage: false,
+    rewriteRedirects: true,
+    resetOnError: true,
+    redirect: {
+      login: '/ofalooagent/connexion',
+      logout: false,
+      callback: false,
+      home: false,
+    },
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+          maxAge: 18000,
+          // required: true,
+          // type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
+        endpoints: {
+          login: { url: 'agent/login', method: 'post' },
+          logout: { url: 'agent/logout', method: 'get' },
+          user: { url: 'user/agent', method: 'get' },
+        },
+        // tokenRequired: true,
+        // tokenType: 'bearer',
+        // globalToken: true,
+        // autoFetchUser: true
+      },
+    },
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: 'https://ofalooback.herokuapp.com/api/',
+    credentials: true,
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

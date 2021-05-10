@@ -32,7 +32,7 @@
       <div class="sm:px-10 px-4 flex flex-col justify-center">
         <h4 class="logo-color size-14 font-semibold text-c">Besoin d'aide ?</h4>
         <h4 class="logo-color size-13 mb-1 text-c">
-          Appelez-nous au +225 08 88 71 73
+          Appelez-nous au +216 22 09 79 54
         </h4>
       </div>
     </div>

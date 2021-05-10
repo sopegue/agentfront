@@ -12,8 +12,8 @@
         >
           <div class="w-full h-15 border-b b-rg">
             <div class="m-0-auto w-fit vertical-center">
-              <nuxt-link
-                to="/dashboard"
+              <a
+                href="/dashboard"
                 :class="{ flex: size > 409, 'flex flex-col': size <= 409 }"
               >
                 <h4
@@ -37,7 +37,7 @@
                 >
                   Agent
                 </h4>
-              </nuxt-link>
+              </a>
             </div>
           </div>
           <div class="flex flex-col mt-5 h-x485 relative overflow-y-auto aside">
@@ -338,6 +338,7 @@ import Signdrop from '~/components/dropdown/Signdrop.vue'
 import Footers from '~/components/footer/Footers.vue'
 export default {
   components: { Signdrop, Footers },
+  middleware: 'auth',
   data() {
     return {
       scroll: false,
