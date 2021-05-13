@@ -17,7 +17,7 @@
         :class="{
           'flex-col rounded-tr rounded-tl': size < 850,
           'border rounded shadow-sm': size >= 850,
-          ' w380 sticky top-12xse': size >= 850,
+          ' w380 sticky top-18': size >= 850,
         }"
       >
         <div
@@ -44,8 +44,11 @@
               <figure class="image relative rounded-full is-110x110 m-0-auto">
                 <img
                   class="rounded-full"
-                  src="https://ofalooback.herokuapp.com/images/4.jpg"
-                  alt="Placeholder image"
+                  :src="
+                    'https://ofalooback.herokuapp.com/storage/' +
+                    $auth.user.picture_link
+                  "
+                  alt="Photo de profil"
                 />
                 <button
                   class="absolute bottom-0 right-0 -mr-10.5 rounded-full border-none p-3 button is-lightsz"
@@ -95,11 +98,13 @@
             </div>
             <div class="flex flex-col text-center">
               <span class="size-18 logo-color font-semibold"
-                >Yaya Sopegue Soro</span
+                >{{ $linker.capitalizeEach($auth.user.surname) }}
+                {{ $linker.capitalizeEach($auth.user.name) }}
+                ({{ $linker.capitalizeEach($auth.user.agence.name) }})</span
               >
-              <span class="size-12 color-363636f"
-                >yayasopeguesoro@gmail.com</span
-              >
+              <span class="size-14 color-363636f">{{
+                $auth.user.main_email
+              }}</span>
             </div>
           </div>
           <div

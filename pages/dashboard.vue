@@ -425,6 +425,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$auth.user)
     if (!this.modaled && this.size < 768)
       document.body.style.overflowX = 'visible'
     if (this.modaled && this.size >= 1400) {

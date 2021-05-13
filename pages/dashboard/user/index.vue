@@ -23,16 +23,6 @@
             autocomplete="none"
             class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
           />
-          <div class="w-full flex align-center space-x-1 pt-1">
-            <input
-              id="senupd"
-              type="checkbox"
-              class="border rounded no-outlines outline-none"
-            />
-            <label for="senupd" class="size-12"
-              >Utiliser comme email principal</label
-            >
-          </div>
         </div>
         <div
           class="column"

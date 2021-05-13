@@ -20,8 +20,11 @@
             <div class="flex align-center space-x-2 relative">
               <img
                 class="rounded-full is-40x40"
-                src="https://ofalooback.herokuapp.com/images/4.jpg"
-                alt="Placeholder image"
+                :src="
+                  'https://ofalooback.herokuapp.com/storage/' +
+                  $auth.user.picture_link
+                "
+                alt="Photo de profil"
               />
               <div class="flex flex-col">
                 <div class="size-13 color-363636 w-30 over">
@@ -120,7 +123,7 @@
               /></svg
             ><span>Notifications</span>
             <button
-              class="p-2 button scale absolute h-8 w-8 font-semibold bg-red-500w text-white rounded-full border-white top-0 right-0 mr-2"
+              class="p-2 button scale absolute h-8 w-8 font-semibold bg-red-500w text-white rounded-full border-white top-0 right-1.5"
             >
               <span class="text-white size-12 -mt-0.6 block">5</span>
             </button></nuxt-link
