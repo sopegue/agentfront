@@ -19,7 +19,7 @@
               >
                 Bienvenue!
               </div>
-              <div class="size-16 logo-color max-w-40">
+              <div v-if="$auth.loggedIn" class="size-16 logo-color max-w-40">
                 {{ $linker.capitalizeEach($auth.user.surname) }}
                 {{ $linker.capitalizeEach($auth.user.name) }}
                 ({{ $linker.capitalizeEach($auth.user.agence.name) }})

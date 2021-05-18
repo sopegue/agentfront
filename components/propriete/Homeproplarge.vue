@@ -15,7 +15,10 @@
   >
     <div class="">
       <figure v-click-outside="close_del" class="image relative is-4by3">
-        <img src="https://ofalooback.herokuapp.com/images/8.jpg" alt="Placeholder image" />
+        <img
+          src="https://ofalooback.herokuapp.com/images/8.jpg"
+          alt="Placeholder image"
+        />
         <button
           class="absolute cursor-default bottom-0 right-0 mb-2 mr-2 z-10"
           title="Contient une vidéo"

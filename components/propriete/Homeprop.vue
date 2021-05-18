@@ -41,7 +41,7 @@
           </button>
           <div
             v-show="hovered"
-            class="absolute appearZ flex flex-col justify-center space-y-4 z-0 top-0 left-0 w-full h-full bg-black-tre"
+            class="absolute appearZ z-10 flex flex-col justify-center space-y-4 top-0 left-0 w-full h-full bg-black-tre"
           >
             <nuxt-link
               :to="
@@ -70,27 +70,6 @@
               "
             >
               Supprimer
-            </button>
-          </div>
-          <div
-            v-if="property.property.proposition.includes('Vente')"
-            class="absolute z-10 bottom-0 left-0"
-          >
-            <button
-              class="border-none size-11 text-white rounded ml-1 mb-1 button bg-black-tr both-centers"
-            >
-              <label :for="'azaezz'" class="flex align-center container">
-                <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
-                  >Marquer comme vendue</span
-                >
-                <input
-                  :id="'azaezz'"
-                  v-model="checkedCategv"
-                  type="checkbox"
-                  value="Vendue"
-                />
-                <span class="checkmark"></span>
-              </label>
             </button>
           </div>
           <div
@@ -145,6 +124,27 @@
         </figure>
       </div>
       <div class="flex flex-col mt-2" @click="$router.push('/propriete')">
+        <div
+          v-if="property.property.proposition.includes('Vente')"
+          class="z-10"
+        >
+          <button
+            class="border-none size-11 text-white rounded ml-1 mb-1 button bg-black-tr"
+          >
+            <label :for="'azaezz'" class="flex align-center container">
+              <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
+                >Marquer comme vendue</span
+              >
+              <input
+                :id="'azaezz'"
+                v-model="checkedCategv"
+                type="checkbox"
+                value="Vendue"
+              />
+              <span class="checkmark"></span>
+            </label>
+          </button>
+        </div>
         <div class="flex align-center justify-between">
           <h4 class="logo-color size-15 font-semibold">
             {{ property.property.type }}
@@ -365,7 +365,10 @@ export default {
         if (element.principal === 'yes')
           return 'https://ofalooback.herokuapp.com/storage/' + element.url
       }
-      return 'https://ofalooback.herokuapp.com/storage/' + this.property.images[0].url
+      return (
+        'https://ofalooback.herokuapp.com/storage/' +
+        this.property.images[0].url
+      )
     },
   },
   watch: {

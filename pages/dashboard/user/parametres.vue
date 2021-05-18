@@ -17,17 +17,30 @@
           <span class="checkmark"></span>
         </label>
       </div>
-      <div class="pt-3">
+      <div v-if="$auth.user.status === 'verifying'" class="pt-3">
         <h4 class="logo-color size-13 pb-1">
-          Confirmation de l'adresse email principale
-          <span class="font-semibold size-125"
-            >(Votre adresse n'est pas confirmée / Votre adresse est
-            confirmée)</span
+          Statut du compte
+          <span class="font-semibold size-13">(En cours de vérification)</span>
+        </h4>
+        <h4 class="logo-color size-13 pb-1">
+          Adresse email principale:
+          <span class="size-13 logo-color font-semibold">{{
+            $auth.user.main_email
+          }}</span>
+        </h4>
+      </div>
+      <div v-else-if="$auth.user.email_verified_at === null" class="pt-3">
+        <h4 class="logo-color size-13 pb-1">
+          Statut du compte
+          <span class="font-semibold size-13"
+            >(Adresse email principale non confirmée)</span
           >
         </h4>
         <h4 class="logo-color size-13 pb-1">
-          Adresse actuelle:
-          <span class="size-13 color-363636f">yayasopeguesoro@gmail.com</span>
+          Adresse email principale:
+          <span class="size-13 logo-color font-semibold">{{
+            $auth.user.main_email
+          }}</span>
         </h4>
         <div class="pt-1 w-fit">
           <button
@@ -37,7 +50,21 @@
           </button>
         </div>
       </div>
-      <div class="pt-6">
+      <div v-else class="pt-3">
+        <h4 class="logo-color size-13 pb-1">
+          Statut du compte
+          <span class="font-semibold size-13"
+            >(Adresse email principale confirmée)</span
+          >
+        </h4>
+        <h4 class="logo-color size-13 pb-1">
+          Adresse email principale:
+          <span class="size-13 logo-color font-semibold">{{
+            $auth.user.main_email
+          }}</span>
+        </h4>
+      </div>
+      <div class="pt-4">
         <h4 class="logo-color size-13 pb-1">Fermeture de compte</h4>
         <div class="pt-1 w-fit">
           <button

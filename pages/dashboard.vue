@@ -8,7 +8,7 @@
             drawerh: modaled,
             draweros: !modaled,
           }"
-          class="bg-gray-800 drawer h-full fixed w180mins z-10000"
+          class="bg-gray-800 drawer h-full fixed w180mins z-15"
         >
           <div class="w-full h-15 border-b b-rg">
             <div class="m-0-auto w-fit vertical-center">
@@ -298,7 +298,7 @@
                       </svg>
                     </nuxt-link>
                   </div>
-                  <div>
+                  <div v-if="$auth.loggedIn">
                     <signdrop></signdrop>
                   </div>
                 </div>
@@ -424,8 +424,7 @@ export default {
       this.setblanc(5000)
     }
   },
-  mounted() {
-    console.log(this.$auth.user)
+  async mounted() {
     if (!this.modaled && this.size < 768)
       document.body.style.overflowX = 'visible'
     if (this.modaled && this.size >= 1400) {
@@ -446,8 +445,22 @@ export default {
     this.scrolltop()
     if (!this.modaled && this.size < 768)
       document.body.style.overflowX = 'visible'
+    if (!this.$auth.loggedIn) {
+      if (localStorage.hdzd) {
+        const data = await JSON.parse(localStorage.getItem('hdzd'))
+        this.logoutImmediatly(data)
+      }
+    }
   },
   methods: {
+    async logoutImmediatly(data) {
+      await this.$axios
+        .$get('client/logout/notoken/' + data.odzd + '/' + data.scds)
+        .then((res) => {
+          // console.log(res.json())
+          localStorage.removeItem('hdzd')
+        })
+    },
     setblanc(val) {
       if (this.modaled && this.once) {
         setTimeout(() => {

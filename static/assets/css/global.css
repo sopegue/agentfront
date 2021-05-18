@@ -112,6 +112,7 @@ svg {
 }
 .noclick {
   pointer-events: none !important;
+  color: #bebebe !important;
 }
 .noclick div,
 .noclick span,
