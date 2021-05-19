@@ -393,6 +393,31 @@
                       </a>
                     </div>
                   </div>
+                  <div v-show="images.length > 0" class="border-b pb-2">
+                    <div
+                      v-for="(i, j) in images.length"
+                      :key="j"
+                      class="hiddenmox"
+                      :class="{
+                        slide: active === j,
+                      }"
+                    >
+                      <div class="px-2">
+                        <div class="w-max-128">
+                          <label for="sizez" class="size-12 pb-0.8 block"
+                            >Description de l'image</label
+                          >
+                          <input
+                            id="sizez"
+                            v-model="desc[active]"
+                            type="text"
+                            placeholder="Max 255 caractères..."
+                            class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="p-3">
                     <div
                       class="w-fit clickable m-0-auto text-center"
@@ -553,12 +578,12 @@
                       'advlist autolink lists link charmap code',
                       'searchreplace fullscreen',
                       'print preview anchor',
-                      'paste help wordcount table',
+                      'paste wordcount table',
                     ],
                     toolbar:
                       'undo redo | formatselect code | forecolor | link fullscreen | bold italic underline | \
         alignleft aligncenter alignright alignjustify | \
-        bullist numlist outdent indent | table tabledelete | help',
+        bullist numlist outdent indent | table tabledelete',
                     default_link_target: '_blank',
                   }"
                 >
@@ -578,7 +603,7 @@
             Caractéristiques de la propriété
           </h4>
           <div class="flex flex-col space-y-4">
-            <div>
+            <div :class="{ noclick: type === 'Studio' }">
               <div class="w-max-128">
                 <label for="sizrexz" class="size-13 pb-0.8 block"
                   >Nombre de pièces (chambres)</label
@@ -669,9 +694,11 @@
         </p>
         <a
           class="border-none flex align-center size-13 text-white block mt-5 px-3.5 pb-1.5 rounded button btn-008489"
+          :class="{ noclick: onsent }"
           @click="publish"
         >
           <svg
+            v-show="!onsent"
             class="mr-2"
             width="20"
             height="20"
@@ -686,7 +713,15 @@
               fill="#fff"
             />
           </svg>
-          Terminer et publier votre propriété
+          <span v-show="onsent" class="w-fit h-fit mr-2"
+            ><i class="animate-spin fas fa-circle-notch color-white"></i
+          ></span>
+          <span v-show="!onsent" class="size-13 text-white"
+            >Terminer et publier votre propriété</span
+          >
+          <span v-show="onsent" class="size-13 text-white"
+            >Propriété en cours de publication...</span
+          >
         </a>
       </div>
     </div>
@@ -708,6 +743,7 @@ export default {
       venergy,
       infostaille: false,
       quittaille: true,
+      store: false,
       type: '',
       taille: '',
       propos: '',
@@ -730,6 +766,7 @@ export default {
       firstimg: 0,
       files: [],
       images: [],
+      desc: [],
       imgprincipale: ['0'],
       checkedCateg: [],
       negoc: [],
@@ -766,6 +803,9 @@ export default {
     },
     size() {
       return this.$store.state.size
+    },
+    onsent() {
+      return this.store === true
     },
     oneerror() {
       return (
@@ -859,6 +899,9 @@ export default {
       else this.garage = ov
     },
   },
+  updated() {
+    console.log(this.desc)
+  },
   methods: {
     async insta(val = 500) {
       const embed = await fetch(
@@ -890,6 +933,7 @@ export default {
       if (embed === undefined) this.ny = true
     },
     async publish() {
+      this.store = true
       this.ny = false
       this.nt = false
       this.ni = false
@@ -898,7 +942,11 @@ export default {
       if (this.prix === '' && this.prixmin === '' && this.prixmax === '')
         this.noprice = true
       else this.noprice = false
-      if (this.infos === '') this.noinfos = true
+      if (
+        this.tiny === '' ||
+        this.tiny === '<p>D&eacute;crivez votre propri&eacute;t&eacute;...</p>'
+      )
+        this.noinfos = true
       else this.noinfos = false
       if (this.has4pic) this.noimg = false
       else this.noimg = true
@@ -937,6 +985,7 @@ export default {
         form.append('prix_min', +this.prixmin)
         form.append('prix_max', +this.prixmax)
         form.append('negociable', this.negociable)
+        form.append('desc', this.desc)
         this.files.forEach((file) => {
           form.append('file[]', file)
         })
@@ -945,7 +994,7 @@ export default {
         if (this.links.tiktok !== '') form.append('tiktok', this.links.tiktok)
         if (this.links.insta !== '') form.append('insta', this.links.insta)
         if (this.links.fb !== '') form.append('fb', this.links.fb)
-        form.append('infos', this.infos)
+        form.append('infos', this.tiny)
         form.append('pieces', +this.pieces)
         form.append('bath', +this.bath)
         form.append('garage', +this.garage)
@@ -953,11 +1002,13 @@ export default {
         form.append('outdoor', this.outdoor)
         form.append('energy', this.energy)
         const data = await this.$axios.$post('property', form)
+        console.log(data)
         if (data.status === '201') {
           location.assign(
             '/dashboard/proprietes/mes-proprietes/viewed?id=' + data.id
           )
         }
+        this.store = false
       }
     },
     changeactive(val) {
@@ -1045,6 +1096,7 @@ export default {
       if (this.images.length > 0) {
         const index = this.images.indexOf(this.image)
         this.files.splice(index, 1)
+        this.desc.splice(index, 1)
         this.images.splice(index, 1)
         if (index > 0) {
           this.active = index - 1
@@ -1088,6 +1140,8 @@ export default {
             this.bigsize = true
           } else if (this.files.length < 24) {
             this.files.push(this.file)
+            const index = this.files.indexOf(this.file)
+            this.desc[index] = ''
             reader.addEventListener(
               'load',
               function () {

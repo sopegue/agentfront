@@ -7,7 +7,7 @@
       <div class="flex align-center space-x-3 justify-between px-5 pt-2">
         <button
           class="button is-light rounded py-0.5 px-4"
-          @click="$router.go(-1)"
+          @click="$router.push('/dashboard/proprietes/mes-proprietes')"
         >
           <svg
             width="20"
@@ -415,9 +415,10 @@
               <h4 class="logo-color size-16 font-semibold mb-5">
                 Informations Appartement
               </h4>
-              <div class="my-2">
-                {{ property.data.property.informations }}
-              </div>
+              <div
+                v-html="property.data.property.informations"
+                class="my-2"
+              ></div>
             </div>
           </div>
           <div class="w-full">
