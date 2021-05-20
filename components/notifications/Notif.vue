@@ -321,13 +321,13 @@
               to="/dashboard/proprietes/mes-proprietes/viewed"
               ><figure class="image relative is-96x64">
                 <img
-                  src="https://ofalooback.herokuapp.com/images/4.jpg"
+                  src="https://ofaloo.blob.core.windows.net/ofaloo/4.jpg"
                   alt="Placeholder image"
                 /></figure
             ></nuxt-link>
             <figure v-if="type === '7'" class="image relative is-96x64">
               <img
-                src="https://ofalooback.herokuapp.com/images/8.jpg"
+                src="https://ofaloo.blob.core.windows.net/ofaloo/8.jpg"
                 alt="Placeholder image"
               />
             </figure>

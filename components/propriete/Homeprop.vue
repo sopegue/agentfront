@@ -21,7 +21,7 @@
           <img :src="getImgPrin" alt="Placeholder image" />
           <button
             v-if="property.links !== undefined && property.links !== null"
-            class="absolute cursor-default bottom-0 right-0 mb-2 mr-2 z-10"
+            class="absolute cursor-default bottom-0 right-0 mb-2 mr-2 z-15"
             title="Contient un ou plusieurs lien vidéo(s)"
           >
             <svg
@@ -40,7 +40,7 @@
             </svg>
           </button>
           <div
-            v-show="hovered"
+            v-show="hovered || size <= 1024"
             class="absolute appearZ z-10 flex flex-col justify-center space-y-4 top-0 left-0 w-full h-full bg-black-tre"
           >
             <nuxt-link
@@ -123,28 +123,25 @@
           </div>
         </figure>
       </div>
-      <div class="flex flex-col mt-2" @click="$router.push('/propriete')">
-        <div
-          v-if="property.property.proposition.includes('Vente')"
-          class="z-10"
+      <div v-if="property.property.proposition.includes('Vente')" class="z-10">
+        <button
+          class="border-none size-11 text-white rounded ml-1 mt-3 mb button bg-black-tr"
         >
-          <button
-            class="border-none size-11 text-white rounded ml-1 mb-1 button bg-black-tr"
-          >
-            <label :for="'azaezz'" class="flex align-center container">
-              <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
-                >Marquer comme vendue</span
-              >
-              <input
-                :id="'azaezz'"
-                v-model="checkedCategv"
-                type="checkbox"
-                value="Vendue"
-              />
-              <span class="checkmark"></span>
-            </label>
-          </button>
-        </div>
+          <label :for="'azaezz'" class="flex align-center container">
+            <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
+              >Marquer comme vendue</span
+            >
+            <input
+              :id="'azaezz'"
+              v-model="checkedCategv"
+              type="checkbox"
+              value="Vendue"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </button>
+      </div>
+      <div class="flex flex-col mt-1" @click="$router.push('/propriete')">
         <div class="flex align-center justify-between">
           <h4 class="logo-color size-15 font-semibold">
             {{ property.property.type }}
@@ -356,6 +353,9 @@ export default {
         this.property.property !== null
       )
     },
+    size() {
+      return this.$store.state.size
+    },
     deleting() {
       return this.delete === true
     },
@@ -363,10 +363,10 @@ export default {
       for (let index = 0; index < this.property.images.length; index++) {
         const element = this.property.images[index]
         if (element.principal === 'yes')
-          return 'https://ofalooback.herokuapp.com/storage/' + element.url
+          return 'https://ofaloo.blob.core.windows.net/ofaloo/' + element.url
       }
       return (
-        'https://ofalooback.herokuapp.com/storage/' +
+        'https://ofaloo.blob.core.windows.net/ofaloo/' +
         this.property.images[0].url
       )
     },

@@ -44,7 +44,7 @@
               <figure class="image relative rounded-full is-110x110 m-0-auto">
                 <img
                   class="rounded-full"
-                  src="https://ofalooback.herokuapp.com/images/4.jpg"
+                  src="https://ofaloo.blob.core.windows.net/ofaloo/4.jpg"
                   alt="Placeholder image"
                 />
                 <button

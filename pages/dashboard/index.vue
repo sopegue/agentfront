@@ -9,7 +9,7 @@
             <figure class="image relative is-96x96 rounded-full">
               <img
                 class="rounded-full"
-                src="https://ofalooback.herokuapp.com/images/4.jpg"
+                src="https://ofaloo.blob.core.windows.net/ofaloo/4.jpg"
                 alt="Placeholder image"
               />
             </figure>

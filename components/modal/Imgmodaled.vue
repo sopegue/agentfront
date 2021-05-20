@@ -2,12 +2,16 @@
   <div class="modal is-active">
     <div class="modal-background" @mousedown="close"></div>
     <div
-      class="modal-content w-full h-x620 m-5 px-5"
-      :class="{ '-mt-56': modaled }"
+      class="w-full m-5 px-5"
+      :class="{
+        'fixeds w-fit top-5 left-0 h-fit -ml-0': modaled,
+        'w-full h-x620': !modaled,
+      }"
     >
       <div class="modal-background bg-transparent" @mousedown="close"></div>
       <div
-        class="box relative overflow-y-auto bg-white wmin-900z m-0-auto h-full px-2 aside"
+        id="imgmod"
+        class="box relative overflow-y-auto m-0-auto bg-white h-full px-2 aside"
       >
         <button
           class="modal-close z-20 is-large logo-color absolute top-0 right-0 mt-2 mr-2"
@@ -81,6 +85,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    position: {
+      type: Object,
+      default: () => {},
+    },
     indexer: {
       type: Number,
       default: 0,
@@ -112,6 +120,7 @@ export default {
   },
   mounted() {
     this.active = this.indexer
+    this.pos()
   },
   methods: {
     close() {
@@ -119,6 +128,21 @@ export default {
     },
     zoominout() {
       this.zoom = !this.zoom
+    },
+    scrolltop() {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      })
+    },
+    pos() {
+      this.scrolltop()
+      // if (this.modaled) {
+      //   const el = document.getElementById('imgmod')
+      //   el.style.left = this.position.x + 'px'
+      //   el.style.top = this.position.y + 'px'
+      // }
     },
   },
 }

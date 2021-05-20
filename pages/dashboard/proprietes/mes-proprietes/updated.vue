@@ -269,7 +269,7 @@
             <div class="">
               <div class="flex align-center justify-between my-2">
                 <label class="size-14 pb-1 logo-color"
-                  >Contenus images (Min: 4 & Max: 24)</label
+                  >Contenus images (Max: 24)</label
                 >
               </div>
               <div
@@ -299,16 +299,44 @@
                       v-if="imgmodaled"
                       :imgs="images"
                       :indexer="active"
+                      :position="pos"
                       @close="close"
                     ></imgmodaled>
                   </div>
-                  <div class="">
-                    <div
-                      class="flex align-center justify-between space-x-5 pt-1.5"
-                    >
+                  <div class="flex align-center justify-between">
+                    <div v-show="images.length > 0">
+                      <div
+                        v-for="(i, j) in images.length"
+                        :key="j"
+                        class="hiddenmox"
+                        :class="{
+                          slide: active === j,
+                        }"
+                      >
+                        <div class="flex align-center space-x-2 pt-1.5 pl-1.5">
+                          <input
+                            :id="'senudzpd' + i"
+                            v-model="imgprincipale"
+                            type="checkbox"
+                            :checked="
+                              imgprincipale.includes((i - 1).toString())
+                                ? 'checked'
+                                : ''
+                            "
+                            :value="(i - 1).toString()"
+                            class="border rounded no-outlines outline-none"
+                            @click="check"
+                          />
+                          <label :for="'senudzpd' + i" class="size-12"
+                            >Image principale</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex align-center space-x-5 pt-1.5">
                       <a
                         v-show="images.length > 0"
-                        class="border-none flex align-center size-12 logo-color px-3.5 pb-1.5 rounded button"
+                        class="border-none flex align-center size-12 logo-color px-3.5 pb-1.5 rounded button self-end"
                         @click="moduploadpic"
                       >
                         <svg
@@ -331,29 +359,33 @@
 
                         Modifier l'image
                       </a>
-                      <a
-                        v-show="images.length > 0"
-                        class="border-none flex align-center size-12 logo-color px-3.5 pb-1.5 rounded button"
-                        @click="delpic"
-                      >
-                        <svg
-                          class="mr-1.5"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM8.70711 7.29289C8.31658 6.90237 7.68342 6.90237 7.29289 7.29289C6.90237 7.68342 6.90237 8.31658 7.29289 8.70711L8.58579 10L7.29289 11.2929C6.90237 11.6834 6.90237 12.3166 7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L10 11.4142L11.2929 12.7071C11.6834 13.0976 12.3166 13.0976 12.7071 12.7071C13.0976 12.3166 13.0976 11.6834 12.7071 11.2929L11.4142 10L12.7071 8.70711C13.0976 8.31658 13.0976 7.68342 12.7071 7.29289C12.3166 6.90237 11.6834 6.90237 11.2929 7.29289L10 8.58579L8.70711 7.29289Z"
-                            fill="#2d3748"
+                    </div>
+                  </div>
+                  <div v-show="images.length > 0" class="border-b pb-2">
+                    <div
+                      v-for="(i, j) in images.length"
+                      :key="j"
+                      class="hiddenmox"
+                      :class="{
+                        slide: active === j,
+                      }"
+                    >
+                      <div class="px-2">
+                        <div class="w-max-128">
+                          <label
+                            :for="'sizezss' + j"
+                            class="size-12 pb-0.8 block"
+                            >Description de l'image</label
+                          >
+                          <input
+                            :id="'sizezss' + j"
+                            v-model="desc[active]"
+                            type="text"
+                            placeholder="Max 255 caractères..."
+                            class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
                           />
-                        </svg>
-
-                        Supprimer l'image
-                      </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="p-3">
@@ -448,6 +480,12 @@
                   type="text"
                   class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
                 />
+                <p
+                  v-show="noyt"
+                  class="size-12 appearZ text-red-700 leading-4 pt-1 pb-3"
+                >
+                  Lien Youtube invalide
+                </p>
               </div>
             </div>
             <div>
@@ -461,6 +499,12 @@
                   type="text"
                   class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
                 />
+                <p
+                  v-show="notiktok"
+                  class="size-12 appearZ text-red-700 leading-4 pt-1 pb-3"
+                >
+                  Lien Tik Tok invalide
+                </p>
               </div>
             </div>
             <div>
@@ -474,19 +518,12 @@
                   type="text"
                   class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
                 />
-              </div>
-            </div>
-            <div>
-              <div class="w-max-128">
-                <label for="sizrezaz" class="size-13 pb-0.8 block"
-                  >Lien vidéo Facebook</label
+                <p
+                  v-show="noinsta"
+                  class="size-12 appearZ text-red-700 leading-4 pt-1 pb-3"
                 >
-                <input
-                  id="sizrezaz"
-                  v-model="links.fb"
-                  type="text"
-                  class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
-                />
+                  Lien instagram invalide
+                </p>
               </div>
             </div>
           </div>
@@ -496,26 +533,39 @@
           <h4 class="logo-color size-14 font-semibold my-4 border-b pb-1">
             Informations sur la propriété
           </h4>
-          <p
-            v-show="uninfos"
-            class="size-12 appearZ text-red-700 leading-4 pt-1 pb-3"
-          >
-            Veuillez donner une description de la propriété
-          </p>
           <div class="flex flex-col space-y-4">
             <div>
               <div class="w-max-128">
-                <label for="sizewz" class="size-13 pb-0.8 block"
-                  >Informations sur la propriété</label
+                <editor
+                  v-model="tiny"
+                  api-key="lky8nvtpigpvirb73qk2iobmxn3id88zwovbl7c0rw8hp9os"
+                  initial-value="<p>Décrivez votre propriété...</p>"
+                  :init="{
+                    height: 320,
+                    language_url: '/tinymce/langs/fr_FR.js',
+                    language: 'fr_FR',
+                    plugins: [
+                      'advlist autolink lists link charmap code',
+                      'searchreplace fullscreen',
+                      'print preview anchor',
+                      'paste wordcount table',
+                    ],
+                    toolbar:
+                      'undo redo | formatselect code | forecolor | link fullscreen | bold italic underline | \
+        alignleft aligncenter alignright alignjustify | \
+        bullist numlist outdent indent | table tabledelete',
+                    default_link_target: '_blank',
+                  }"
                 >
-                <input
-                  id="sizewz"
-                  v-model="infos"
-                  type="text"
-                  class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
-                />
+                </editor>
               </div>
             </div>
+            <p
+              v-show="uninfos"
+              class="size-12 appearZ text-red-700 leading-4 pt-1 pb-3"
+            >
+              Veuillez donner une description de la propriété
+            </p>
           </div>
         </div>
         <div class="border-b pb-8">
@@ -523,7 +573,13 @@
             Caractéristiques de la propriété
           </h4>
           <div class="flex flex-col space-y-4">
-            <div>
+            <div
+              :class="{
+                noclick: ['Studio', 'Magasin', 'Bureau', 'Terrain'].includes(
+                  type
+                ),
+              }"
+            >
               <div class="w-max-128">
                 <label for="sizrexz" class="size-13 pb-0.8 block"
                   >Nombre de pièces (chambres)</label
@@ -570,25 +626,30 @@
                 >Caractéristiques intérieures</label
               >
               <div>
-                <label class="flex align-center container pb-1"
-                  ><span class="w-fit size-13 -mt-0.75 multichoice-categ"
-                    >Jacuzzi</span
-                  >
-                  <input v-model="indoor" type="checkbox" value="Jacuzzi" />
-                  <span class="checkmark"></span>
-                </label>
+                <label class="size-14 font-semibold logo-color pb-4 block"
+                  >Caractéristiques intérieures</label
+                >
+                <div v-for="(ind, i) in vindoor" :key="i" class="py-0.5">
+                  <label class="flex align-center container pb-1"
+                    ><span class="w-fit size-13 -mt-0.75 multichoice-categ">{{
+                      ind
+                    }}</span>
+                    <input v-model="indoor" type="checkbox" :value="ind" />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
               </div>
             </div>
             <div>
               <label class="size-14 font-semibold logo-color pb-4 block"
                 >Caractéristiques extérieures</label
               >
-              <div>
+              <div v-for="(ind, j) in voutdoor" :key="j" class="py-0.5">
                 <label class="flex align-center container pb-1"
-                  ><span class="w-fit size-13 -mt-0.75 multichoice-categ"
-                    >Balcon</span
-                  >
-                  <input v-model="outdoor" type="checkbox" value="Balcon" />
+                  ><span class="w-fit size-13 -mt-0.75 multichoice-categ">{{
+                    ind
+                  }}</span>
+                  <input v-model="outdoor" type="checkbox" :value="ind" />
                   <span class="checkmark"></span>
                 </label>
               </div>
@@ -597,12 +658,12 @@
               <label class="size-14 font-semibold logo-color pb-4 block"
                 >Contrôle de l'énergie</label
               >
-              <div>
+              <div v-for="(ind, k) in venergy" :key="k" class="py-0.5">
                 <label class="flex align-center container pb-1"
-                  ><span class="w-fit size-13 -mt-0.75 multichoice-categ"
-                    >Climatiseur</span
-                  >
-                  <input v-model="energy" type="checkbox" value="Climatiseur" />
+                  ><span class="w-fit size-13 -mt-0.75 multichoice-categ">{{
+                    ind
+                  }}</span>
+                  <input v-model="energy" type="checkbox" :value="ind" />
                   <span class="checkmark"></span>
                 </label>
               </div>
@@ -613,10 +674,12 @@
           Veuillez corriger les erreurs au dessus
         </p>
         <a
-          class="border-none flex align-center size-12 text-white block mt-5 px-3.5 pb-1.5 rounded button btn-008489"
+          class="border-none flex align-center size-13 text-white block mt-5 px-3.5 pb-1.5 rounded button btn-008489"
+          :class="{ noclick: onsents }"
           @click="publish"
         >
           <svg
+            v-show="!onsents"
             class="mr-2"
             width="20"
             height="20"
@@ -631,7 +694,15 @@
               fill="#fff"
             />
           </svg>
-          Terminer et publier votre propriété
+          <span v-show="onsents" class="w-fit h-fit mr-2"
+            ><i class="animate-spin fas fa-circle-notch color-white"></i
+          ></span>
+          <span v-show="!onsents" class="size-13 text-white"
+            >Terminer et enregistrer les modifications</span
+          >
+          <span v-show="onsents" class="size-13 text-white"
+            >En cours de modification...</span
+          >
         </a>
       </div>
     </div>
@@ -639,20 +710,26 @@
 </template>
 
 <script>
+import { vindoor, voutdoor, venergy } from '@/options/options.js'
+import Editor from '@tinymce/tinymce-vue'
 import Imgs from '~/components/amg/Imgs.vue'
 import Typeprop from '~/components/dropdown/Typeprop.vue'
 import Imgmodaled from '~/components/modal/Imgmodaled.vue'
 export default {
-  components: { Typeprop, Imgs, Imgmodaled },
+  components: { Typeprop, Imgs, Imgmodaled, editor: Editor },
   middleware: 'query',
-  async asyncData({ query }) {
-    const property = await fetch(
-      'https://ofalooback.herokuapp.com/api/property/agent/' + query.id
-    ).then((res) => res.json())
+  async asyncData({ query, $axios }) {
+    const property = await $axios.$get(
+      'https://ofalooback.herokuapp.com/api/aproperty/agent/' + query.id
+    )
+
     return { property }
   },
   data() {
     return {
+      vindoor,
+      voutdoor,
+      venergy,
       infostaille: false,
       quittaille: true,
       type: '',
@@ -662,6 +739,7 @@ export default {
       typeloc: '',
       adresse: '',
       ville: '',
+      tiny: '',
       cp: '',
       prix: '',
       prixmin: '',
@@ -671,6 +749,7 @@ export default {
       pieces: '',
       bath: '',
       garage: '',
+      pos: { x: 0, y: 0 },
       currentchangedfile: '',
       currentchangedimg: '',
       firstimg: 0,
@@ -680,6 +759,7 @@ export default {
       imgprincipale: ['0'],
       checkedCateg: [],
       negoc: [],
+      desc: [],
       indoor: [],
       outdoor: [],
       energy: [],
@@ -694,11 +774,15 @@ export default {
       loaded: false,
       bigsize: false,
       imgmodaled: false,
-
+      share: false,
       noadresse: false,
       noprice: false,
       noinfos: false,
       noimg: false,
+      ny: false,
+      nt: false,
+      ni: false,
+      store: false,
     }
   },
   computed: {
@@ -711,12 +795,19 @@ export default {
     size() {
       return this.$store.state.size
     },
+
+    onsents() {
+      return this.store === true
+    },
     oneerror() {
       return (
         this.unadresse === true ||
         this.unprice === true ||
         this.uninfos === true ||
-        this.unimg === true
+        this.unimg === true ||
+        this.noyt === true ||
+        this.notiktok === true ||
+        this.noinsta === true
       )
     },
     dataOk() {
@@ -741,6 +832,15 @@ export default {
     modaled() {
       return this.$store.state.dash_mod
     },
+    noyt() {
+      return this.ny === true
+    },
+    notiktok() {
+      return this.nt === true
+    },
+    noinsta() {
+      return this.ni === true
+    },
   },
   watch: {
     taille(nv, ov) {
@@ -761,6 +861,19 @@ export default {
     infos() {
       this.noinfos = false
     },
+    type(nv, ov) {
+      if (['Studio', 'Magasin', 'Bureau', 'Terrain'].includes(nv)) {
+        this.pieces = '0'
+      }
+    },
+    links: {
+      handler() {
+        this.ny = false
+        this.nt = false
+        this.ni = false
+      },
+      deep: true,
+    },
     prix(nv, ov) {
       if (this.$linker.isNumber(nv)) this.prix = nv
       else this.prix = ov
@@ -780,14 +893,48 @@ export default {
       else this.garage = ov
     },
   },
+
   mounted() {
-    if (this.property.data.status !== '404') this.fill()
+    if (this.property.data.status !== '404' || this.property.data.length > 0)
+      this.fill()
     this.not_found()
   },
   // beforeMount() {
   //   this.has_no_query()
   // },
   methods: {
+    hideshare() {
+      this.share = false
+    },
+    async insta(val = 500) {
+      const embed = await fetch(
+        'https://graph.facebook.com/v10.0/instagram_oembed?url=' +
+          this.links.insta +
+          '&access_token=488958562538081|8eb8ed1113a761c63d3d62a894ac34ff'
+      )
+        .then((res) => res.json())
+        .catch(() => console.log("can't get embed link insta"))
+      if (embed.error) this.ni = true
+    },
+    async tiktok(val = 500) {
+      const embed = await fetch(
+        'https://www.tiktok.com/oembed?url=' + this.links.tiktok
+      )
+        .then((res) => res.json())
+        .catch(() => console.log("can't get embed link tiktok"))
+      if (embed.status_msg) this.nt = true
+    },
+    async yt(val = 728) {
+      const embed = await fetch(
+        'https://www.youtube.com/oembed?url=' +
+          this.links.yt +
+          '&format=json&maxheight=728&maxwidth=' +
+          val
+      )
+        .then((res) => res.json())
+        .catch(() => console.log("can't get embed link yt"))
+      if (embed === undefined) this.ny = true
+    },
     // has_no_query() {
     //   if (this.$route.query.id !== undefined) {
     //     if (this.$linker.isNumber(this.$route.query.id)) {
@@ -798,7 +945,10 @@ export default {
     //   } else location.assign('/dashboard/proprietes/mes-proprietes')
     // },
     not_found() {
-      if (this.property.data.status === '404')
+      if (
+        this.property.data.length === 0 ||
+        this.property.data.status === '404'
+      )
         location.assign('/dashboard/proprietes/mes-proprietes')
     },
     fill() {
@@ -828,12 +978,18 @@ export default {
         this.property.data.property.negociable === 'yes' ? ['yes'] : []
 
       this.image =
-        'https://ofalooback.herokuapp.com/storage/' +
+        'https://ofaloo.blob.core.windows.net/ofaloo/' +
         this.property.data.images[0].url
       for (let index = 0; index < this.property.data.images.length; index++) {
         const img = this.property.data.images[index]
-        this.images.push('https://ofalooback.herokuapp.com/storage/' + img.url)
-        this.files.push('https://ofalooback.herokuapp.com/storage/' + img.url)
+        if (img.desc === null) this.desc.push('')
+        else this.desc.push(img.desc)
+        this.images.push(
+          'https://ofaloo.blob.core.windows.net/ofaloo/' + img.url
+        )
+        this.files.push(
+          'https://ofaloo.blob.core.windows.net/ofaloo/' + img.url
+        )
         if (img.principal === 'yes') this.imgprincipale = [index.toString()]
       }
       document.getElementById('vidsource').src = this.image
@@ -860,7 +1016,7 @@ export default {
             ? ''
             : this.property.data.links.fb
       }
-      this.infos = this.property.data.property.informations
+      this.tiny = this.property.data.property.informations
       this.pieces =
         this.property.data.property.bed === 0
           ? ''
@@ -889,7 +1045,17 @@ export default {
         }
       }
     },
-
+    check(e) {
+      if (this.active === 0) {
+        this.imgprincipale = ['0']
+      } else if (this.imgprincipale.includes(this.active.toString())) {
+        this.imgprincipale = []
+        this.imgprincipale.push('0')
+      } else {
+        this.imgprincipale = []
+        this.imgprincipale.push(this.active.toString())
+      }
+    },
     show(val) {
       if (val === 'taille') this.quittaille = false
       else if (val === 'visit') this.quitvisit = false
@@ -930,17 +1096,43 @@ export default {
     // async publish() {
 
     async publish() {
+      this.store = true
+      this.ny = false
+      this.nt = false
+      this.ni = false
       if (this.adresse === '') this.noadresse = true
       else this.noadresse = false
       if (this.prix === '' && this.prixmin === '' && this.prixmax === '')
         this.noprice = true
       else this.noprice = false
-      if (this.infos === '') this.noinfos = true
+      if (
+        this.tiny === '' ||
+        this.tiny === '<p>D&eacute;crivez votre propri&eacute;t&eacute;...</p>'
+      )
+        this.noinfos = true
       else this.noinfos = false
       if (this.has4pic) this.noimg = false
       else this.noimg = true
 
-      if (!this.noadresse && !this.noprice && !this.noinfos && !this.noimg) {
+      if (this.links.yt !== '') {
+        await this.yt()
+      }
+      if (this.links.tiktok !== '') {
+        await this.tiktok()
+      }
+      if (this.links.insta !== '') {
+        await this.insta()
+      }
+
+      if (
+        !this.noadresse &&
+        !this.noprice &&
+        !this.noinfos &&
+        !this.noimg &&
+        !this.noyt &&
+        !this.notiktok &&
+        !this.noinsta
+      ) {
         this.erfile = false
         const form = new FormData()
         form.append('id', this.property.data.property.id)
@@ -956,34 +1148,60 @@ export default {
         form.append('prix_min', +this.prixmin)
         form.append('prix_max', +this.prixmax)
         form.append('negociable', this.negociable)
+        form.append('desc', this.desc)
+        form.append('principale', +this.imgprincipale[0])
+        for (let index = 0; index < this.desc.length; index++) {
+          form.append('file' + index, this.files[index])
+        }
+        // this.files.forEach((file) => {
+        //   form.append('file[]', file)
+        // })
 
-        this.files.forEach((file) => {
-          if (file.name !== undefined) form.append('file[]', file)
-        })
-        this.to_not_change = []
-        this.files.forEach((file) => {
-          if (file.name === undefined) {
-            this.to_not_change.push(
-              this.sameImg(this.property.data.images, file)
-            )
-          }
-        })
-        form.append('unchanged_files', this.to_not_change)
+        // this.files.forEach((file) => {
+        //   if (file.name !== undefined) form.append('file[]', file)
+        // })
+        // this.to_not_change = []
+        // this.files.forEach((file) => {
+        //   if (file.name === undefined) {
+        //     this.to_not_change.push(
+        //       this.sameImg(this.property.data.images, file)
+        //     )
+        //   }
+        // })
+        // form.append('unchanged_files', this.to_not_change)
 
         if (this.links.yt !== '') form.append('yt', this.links.yt)
         if (this.links.tiktok !== '') form.append('tiktok', this.links.tiktok)
         if (this.links.insta !== '') form.append('insta', this.links.insta)
         if (this.links.fb !== '') form.append('fb', this.links.fb)
-        form.append('infos', this.infos)
+        form.append('infos', this.tiny)
         form.append('pieces', +this.pieces)
         form.append('bath', +this.bath)
         form.append('garage', +this.garage)
         form.append('indoor', this.indoor)
         form.append('outdoor', this.outdoor)
         form.append('energy', this.energy)
-        const data = await this.$axios.$post('property/update', form)
-
-        console.log(data)
+        const data = await this.$axios.$post(
+          'http://localhost:8000/api/aproperty/update',
+          form
+        )
+        if (data.status === '201') {
+          this.$store.commit('set_message', 'Propriété modifiée')
+          this.$store.commit('set_green', true)
+          setTimeout(() => {
+            this.$store.commit('set_green', false)
+          }, 3000)
+          this.$router.push(
+            '/dashboard/proprietes/mes-proprietes/viewed?id=' + data.id
+          )
+        } else {
+          this.$store.commit('set_message', 'Désolé, une erreur est survenue')
+          this.$store.commit('set_red', true)
+          setTimeout(() => {
+            this.$store.commit('set_red', false)
+          }, 3000)
+        }
+        this.store = false
       }
     },
     sameImg(val, parent) {
@@ -999,7 +1217,9 @@ export default {
         this.image = this.images[val]
       }
     },
-    open() {
+    open(e) {
+      this.pos.x = e.pageX - 60
+      this.pos.y = e.pageY - 60
       this.imgmodaled = true
     },
     typeprop(val) {
@@ -1030,6 +1250,7 @@ export default {
       if (this.images.length > 0) {
         const index = this.images.indexOf(this.image)
         this.files.splice(index, 1)
+        this.desc.splice(index, 1)
         this.images.splice(index, 1)
         if (index > 0) {
           this.active = index - 1
@@ -1083,6 +1304,8 @@ export default {
             this.bigsize = true
           } else if (this.files.length < 24) {
             this.files.push(this.file)
+            const index = this.files.indexOf(this.file)
+            this.desc[index] = ''
             reader.addEventListener(
               'load',
               function () {

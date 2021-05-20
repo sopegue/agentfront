@@ -81,28 +81,103 @@
           {{ property.data.property.type }}
         </h4>
       </div>
-      <div class="flex align-center space-x-1 mt-1 mb-5">
-        <svg
-          class="w-6 h-6 logo-color -ml-px"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+      <div class="flex align-center justify-between mb-5">
+        <div class="flex align-center space-x-1 mt-1">
+          <svg
+            class="w-6 h-6 logo-color -ml-px"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            ></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            ></path>
+          </svg>
+          <span class="logo-color size-14">{{ property.data.adresse }}</span>
+        </div>
+        <button
+          v-click-outside="hideshare"
+          class="flex align-center relative hover-008489 space-x-1 mt-1"
+          @click="
+            {
+              share = !share
+            }
+          "
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1"
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-          ></path>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1"
-            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-          ></path>
-        </svg>
-        <span class="logo-color size-14">{{ property.data.adresse }}</span>
+          <svg
+            class="w-5 h-5 logo-color -ml-1 makeme-008489"
+            stroke="none"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15 8C16.6569 8 18 6.65685 18 5C18 3.34315 16.6569
+                     2 15 2C13.3431 2 12 3.34315 12 5C12 5.12548 12.0077 
+                     5.24917 12.0227 5.37061L7.08259 7.84064C6.54303 7.32015 
+                     5.8089 7 5 7C3.34315 7 2 8.34315 2 10C2 11.6569 3.34315 
+                     13 5 13C5.80892 13 6.54306 12.6798 7.08263 12.1593L12.0227
+                      14.6293C12.0077 14.7508 12 14.8745 12 15C12 16.6569 13.3431 
+                      18 15 18C16.6569 18 18 16.6569 18 15C18 13.3431 16.6569 12 15 
+                      12C14.1911 12 13.457 12.3201 12.9174 12.8406L7.97733 10.3706C7.9923 10.2492 8 10.1255 8 10C8 9.8745 7.99229 9.7508 7.97733 9.62934L12.9174 7.15932C13.4569 7.67984 14.1911 8 15 8Z"
+              fill="#2d3748"
+            />
+          </svg>
+          <div
+            v-show="share"
+            class="absolute bg-white top-0 mt-6 z-20 appearZ w-fit flex align-center space-x-4 border py-2 px-5 rounded"
+            :class="{ 'right-0': size >= 556, 'left-0': size < 556 }"
+          >
+            <a
+              class="twitter-share-button"
+              :href="`https://twitter.com/intent/tweet?text=https://www.ofaloo.com/propriete/?wyzes=${$route.query.id}`"
+              data-size="large"
+              title="Partager sur Twitter"
+              target="_blank"
+              ><i class="fab fa-twitter size-20 clickable twi-col"></i
+            ></a>
+            <a title="Partager sur Facebook" target="_blank"
+              ><iframe
+                :src="`https://www.facebook.com/plugins/share_button.php?href=https://www.ofaloo.com/propriete/?wyzes=${$route.query.id}&layout=button&size=small&width=81&height=20&appId`"
+                width="81"
+                height="20"
+                style="border: none; overflow: hidden"
+                scrolling="no"
+                frameborder="0"
+                allowfullscreen="true"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              ></iframe
+            ></a>
+            <a v-show="size < 640" :href="mail" title="Partager par email"
+              ><svg
+                class="w-7 min-w-7 h-7 min-h-7 logo-color"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2.00333 5.88355L9.99995 9.88186L17.9967 5.8835C17.9363 4.83315 17.0655 4 16 4H4C2.93452 4 2.06363 4.83318 2.00333 5.88355Z"
+                  fill="#004e66"
+                />
+                <path
+                  d="M18 8.1179L9.99995 12.1179L2 8.11796V14C2 15.1046 2.89543 16 4 16H16C17.1046 16 18 15.1046 18 14V8.1179Z"
+                  fill="#004e66"
+                />
+              </svg>
+            </a>
+          </div>
+          <span class="logo-color size-14 makeme-008489">Partager</span>
+        </button>
       </div>
       <div class="h-402max relative flex space-x-6">
         <div class="h-402max relative w-full">
@@ -217,7 +292,7 @@
               class="absolute appearZ z-10 top-0 left-0 w-full h-full bg-black-trer"
             >
               <svg
-                class="w-14 h-14 text-white both-centers -mt-5"
+                class="w-14 h-14 text-white both-centers -mt-7"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -339,15 +414,13 @@
               >
             </div>
             <div>
-              <nuxt-link
+              <a
                 v-if="property.data.property.proposition === 'Vente totale'"
-                to="/"
                 title="Le prix indiqué représente le montant à payer pour toute la propriété"
                 class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
-                >{{ property.data.property.proposition }}</nuxt-link
-              ><nuxt-link
+                >{{ property.data.property.proposition }}</a
+              ><a
                 v-if="property.data.property.proposition === 'Vente partielle'"
-                to="/"
                 :title="
                   'Le prix indiqué représente ' +
                   property.data.property.percentage_part +
@@ -357,20 +430,18 @@
                 class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
                 >{{ property.data.property.proposition }} ({{
                   property.data.property.percentage_part + '%'
-                }})</nuxt-link
+                }})</a
               >
-              <nuxt-link
+              <a
                 v-if="property.data.property.proposition === 'Location totale'"
-                to="/"
                 title="Le prix indiqué représente le montant à payer pour toute la propriété"
                 class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
-                >{{ property.data.property.proposition }}</nuxt-link
+                >{{ property.data.property.proposition }}</a
               >
-              <nuxt-link
+              <a
                 v-if="
                   property.data.property.proposition === 'Location partielle'
                 "
-                to="/"
                 :title="
                   'Le prix indiqué représente ' +
                   property.data.property.percentage_part +
@@ -380,30 +451,58 @@
                 class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
                 >{{ property.data.property.proposition }} ({{
                   property.data.property.percentage_part + '%'
-                }})</nuxt-link
+                }})</a
               >
             </div>
           </div>
-          <div class="my-2">
-            <img
-              src="https://ofalooback.herokuapp.com/images/prop.png"
-              alt="Placeholder image"
-            />
-          </div>
-        </div>
-      </div>
-      <div v-if="property.data.links !== null">
-        <div class="pb-8 pt-5 border-b">
-          <h4 class="logo-color size-16 font-semibold mb-5">Liens Vidéos</h4>
-          <div class="mt-2 flex flex-col space-y-8">
-            <div class="w-fit h-centers">
-              {{ property.data.property.informations }}
-            </div>
-            <div class="w-fit h-centers">
-              {{ property.data.property.informations }}
-            </div>
-            <div class="w-fit h-centers">
-              {{ property.data.property.informations }}
+          <div class="mt-2">
+            <div class="flex align-center space-x-3.5">
+              <div
+                v-if="property.data.property.bed > 0"
+                :title="property.data.property.bed + ' pièce(s)'"
+                class="flex align-center space-x-1.5"
+              >
+                <span>
+                  <i class="fas size-16 logo-color fa-bed"></i>
+                </span>
+                <span class="logo-color">{{ property.data.property.bed }}</span>
+              </div>
+              <div
+                v-if="property.data.property.bath > 0"
+                :title="property.data.property.bath + ' salles(s) de bain(s)'"
+                class="flex align-center space-x-1.5"
+              >
+                <span>
+                  <i class="fas size-16 logo-color fa-shower"></i>
+                </span>
+                <span class="logo-color">{{
+                  property.data.property.bath
+                }}</span>
+              </div>
+              <div
+                v-if="property.data.property.garage > 0"
+                :title="property.data.property.garage + ' garage(s)'"
+                class="flex align-center space-x-1.5"
+              >
+                <span>
+                  <i class="fas size-16 logo-color fa-warehouse"></i>
+                </span>
+                <span class="logo-color">{{
+                  property.data.property.garage
+                }}</span>
+              </div>
+              <div
+                v-if="property.data.property.taille > 0"
+                :title="'La taille de la propriété'"
+                class="flex align-center space-x-1.5"
+              >
+                <span>
+                  <i class="fas size-16 logo-color fa-ruler-vertical"></i>
+                </span>
+                <span class="logo-color"
+                  >{{ property.data.property.taille }} m²</span
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -421,38 +520,125 @@
               ></div>
             </div>
           </div>
-          <div class="w-full">
-            <div>
-              <h4 class="logo-color size-16 font-semibold mb-5">
-                Caractéristiques Appartement
-              </h4>
-              <div class="my-2">
-                <img
-                  src="https://ofalooback.herokuapp.com/images/prop.png"
-                  alt="Placeholder image"
-                />
-                <img
-                  src="https://ofalooback.herokuapp.com/images/prop.png"
-                  alt="Placeholder image"
-                />
-                <img
-                  src="https://ofalooback.herokuapp.com/images/prop.png"
-                  alt="Placeholder image"
-                />
-                <img
-                  src="https://ofalooback.herokuapp.com/images/prop.png"
-                  alt="Placeholder image"
-                />
-                <img
-                  src="https://ofalooback.herokuapp.com/images/prop.png"
-                  alt="Placeholder image"
-                />
-                <img
-                  src="https://ofalooback.herokuapp.com/images/prop.png"
-                  alt="Placeholder image"
-                />
+          <div v-if="has_options" class="w-full border-t pt-5 pb-5">
+            <div class="w-full">
+              <div>
+                <h4 class="logo-color size-16 font-semibold mb-5">
+                  Caractéristiques {{ property.data.property.type }}
+                </h4>
+                <div class="my-2 flex flex-col space-y-5">
+                  <div v-show="has_in">
+                    <h4 class="logo-color size-14 pb-2 font-semibold">
+                      Intérieur
+                    </h4>
+                    <div class="flex flex-wrap">
+                      <div
+                        v-for="op in options.indoor"
+                        :key="op"
+                        class="flex space-x-1.5 column is-one-fifth"
+                        :class="{ 'mx-5': size < 600 }"
+                      >
+                        <span
+                          ><i class="fas fa-circle size-8 logo-color"></i
+                        ></span>
+                        <span class="logo-color">{{ op }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-show="has_out">
+                    <h4 class="logo-color size-14 pb-2 font-semibold">
+                      Extérieur
+                    </h4>
+                    <div class="flex flex-wrap">
+                      <div
+                        v-for="op in options.outdoor"
+                        :key="op"
+                        class="flex space-x-1.5 column is-one-fifth"
+                        :class="{ 'mx-5': size < 600 }"
+                      >
+                        <span
+                          ><i class="fas fa-circle size-8 logo-color"></i
+                        ></span>
+                        <span class="logo-color">{{ op }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-show="has_en">
+                    <h4 class="logo-color size-14 pb-2 font-semibold">
+                      Contrôle de l'énergie
+                    </h4>
+                    <div class="flex flex-wrap">
+                      <div
+                        v-for="op in options.energy"
+                        :key="op"
+                        class="flex space-x-1.5 column is-one-fifth"
+                        :class="{ 'mx-5': size < 600 }"
+                      >
+                        <span
+                          ><i class="fas fa-circle size-8 logo-color"></i
+                        ></span>
+                        <span class="logo-color">{{ op }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="property.data.links !== null" class="border-b pb-8">
+        <div>
+          <h4 class="logo-color size-16 font-semibold pt-5 w-fit m-0-auto">
+            Réseaux sociaux
+          </h4>
+        </div>
+        <div>
+          <div
+            v-if="links.yt !== null && links.yt !== undefined"
+            class="pt-6 border-t mt-6"
+          >
+            <h4 class="logo-color size-16 font-semibold mb-5">Vidéo Youtube</h4>
+            <yt :link="links.yt"></yt>
+          </div>
+          <div
+            v-if="links.tiktok && links.tiktok !== undefined"
+            class="pt-6 border-t mt-6"
+          >
+            <h4 class="logo-color size-16 font-semibold mb-5">Vidéo Tik Tok</h4>
+            <div
+              class="flex items-center justify-center sm:flex-row flex-col sm:space-x-1.5 sm:space-y-0 space-y-3 pb-5"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span
+                >Si la video Tik Tok ne fonctionne pas convenablement, essayez
+                de désactiver votre bloqueur de publicité(AdBlock) puis
+                ré-actualiser la page.</span
+              >
+            </div>
+            <tiktok :link="links.tiktok"></tiktok>
+          </div>
+          <div
+            v-if="links.insta !== null && links.insta !== undefined"
+            class="pt-6 border-t mt-6"
+          >
+            <h4 class="logo-color size-16 font-semibold mb-5">
+              Vidéo Instagram
+            </h4>
+            <insta :link="links.insta"></insta>
           </div>
         </div>
       </div>
@@ -462,8 +648,11 @@
 
 <script>
 import Bigads from '@/components/propriete/Bigads.vue'
+import Yt from '~/components/social/Yt.vue'
+import Tiktok from '~/components/social/Tiktok.vue'
+import Insta from '~/components/social/Insta.vue'
 export default {
-  components: { Bigads },
+  components: { Bigads, Yt, Tiktok, Insta },
   middleware: 'query',
   async asyncData({ query }) {
     const property = await fetch(
@@ -486,6 +675,11 @@ export default {
       images: [],
       index: 1,
       ades: [],
+      options: {
+        indoor: [],
+        outdoor: [],
+        energy: [],
+      },
     }
   },
   computed: {
@@ -495,6 +689,23 @@ export default {
     deleting() {
       return this.delete === true
     },
+    has_options() {
+      return (
+        this.property !== undefined &&
+        this.property.data.options !== null &&
+        this.property.data.options !== undefined &&
+        this.property.data.options.length > 0
+      )
+    },
+    has_in() {
+      return this.options.indoor.length > 0
+    },
+    has_out() {
+      return this.options.outdoor.length > 0
+    },
+    has_en() {
+      return this.options.energy.length > 0
+    },
     dataOk() {
       return (
         this.property !== undefined &&
@@ -502,8 +713,17 @@ export default {
         this.property.data.property !== undefined
       )
     },
+    links() {
+      return this.property.data.links !== null &&
+        this.property.data.links !== undefined
+        ? this.property.data.links
+        : null
+    },
     modaled() {
       return this.$store.state.dash_mod
+    },
+    mail() {
+      return `mailto:?subject=Propriétés à acheter et louer sur le site Ofaloo.com&amp;body=Découvrez cette superbe propriété sur https://www.ofaloo.com/propriete/?wyzes=${this.$route.query.id}`
     },
     next1() {
       if (this.images.length - 1 - this.curindex <= 1) {
@@ -530,7 +750,25 @@ export default {
   created() {
     this.fillImages()
   },
+  mounted() {
+    this.checkOptions()
+  },
   methods: {
+    checkOptions() {
+      if (this.has_options) {
+        this.property.data.options.forEach((option) => {
+          if (option.options.type === 'indoor') {
+            this.options.indoor.push(option.options.title)
+          }
+          if (option.options.type === 'outdoor') {
+            this.options.outdoor.push(option.options.title)
+          }
+          if (option.options.type === 'energie') {
+            this.options.energy.push(option.options.title)
+          }
+        })
+      }
+    },
     close_del() {
       this.wannadeleted = false
     },
@@ -546,7 +784,7 @@ export default {
         const element = this.property.data.images[index]
         if (element.principal === 'yes') {
           this.images.push(
-            'https://ofalooback.herokuapp.com/storage/' + element.url
+            'https://ofaloo.blob.core.windows.net/ofaloo/' + element.url
           )
           break
         }
@@ -555,7 +793,7 @@ export default {
         const element = this.property.data.images[index]
         if (element.principal === 'no')
           this.images.push(
-            'https://ofalooback.herokuapp.com/storage/' + element.url
+            'https://ofaloo.blob.core.windows.net/ofaloo/' + element.url
           )
       }
       this.ades = this.images

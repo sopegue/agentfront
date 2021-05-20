@@ -8,6 +8,9 @@ export const state = () => ({
   minsearch: false,
   domloading: true,
   hasscrolled: false,
+  green: false,
+  red: false,
+  message: '',
 })
 
 export const mutations = {
@@ -26,6 +29,15 @@ export const mutations = {
   },
   set_Size(state, value) {
     state.size = value
+  },
+  set_red(state, value) {
+    state.red = value
+  },
+  set_green(state, value) {
+    state.green = value
+  },
+  set_message(state, value) {
+    state.message = value
   },
   set_MinSearch(state, value) {
     state.minsearch = value

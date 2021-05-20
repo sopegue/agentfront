@@ -45,7 +45,7 @@
                 <img
                   class="rounded-full"
                   :src="
-                    'https://ofalooback.herokuapp.com/storage/' +
+                    'https://ofaloo.blob.core.windows.net/ofaloo/' +
                     $auth.user.picture_link
                   "
                   alt="Photo de profil"

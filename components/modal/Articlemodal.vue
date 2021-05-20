@@ -319,7 +319,7 @@ export default {
         'https://ofalooback.herokuapp.com/images/9.jpg',
         'https://ofalooback.herokuapp.com/images/1.jpg',
         'https://ofalooback.herokuapp.com/images/3.jpg',
-        'https://ofalooback.herokuapp.com/images/4.jpg',
+        'https://ofaloo.blob.core.windows.net/ofaloo/4.jpg',
         'https://ofalooback.herokuapp.com/images/5.jpg',
         'https://ofalooback.herokuapp.com/videos/vid.mp4',
       ],

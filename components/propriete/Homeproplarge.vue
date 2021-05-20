@@ -16,7 +16,7 @@
     <div class="">
       <figure v-click-outside="close_del" class="image relative is-4by3">
         <img
-          src="https://ofalooback.herokuapp.com/images/8.jpg"
+          src="https://ofaloo.blob.core.windows.net/ofaloo/8.jpg"
           alt="Placeholder image"
         />
         <button

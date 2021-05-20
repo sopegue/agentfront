@@ -16,6 +16,21 @@ div {
   font-size: 14px;
   color: #2d3748;
 }
+#yt iframe {
+  width: 75% !important;
+  height: 460px !important;
+}
+@media screen and (max-width: 1024px) {
+  #yt iframe {
+    width: 100% !important;
+    height: 400px !important;
+  }
+}
+@media screen and (max-width: 740px) {
+  #yt iframe {
+    height: 360px !important;
+  }
+}
 .drawer {
   display: block;
   transition: transform ease 0.3s !important;
@@ -109,6 +124,9 @@ svg {
 }
 .col-008489 {
   color: #008489;
+}
+.twi-col {
+  color: #1da1f2 !important;
 }
 .noclick {
   pointer-events: none !important;
@@ -292,6 +310,10 @@ body {
   content: '';
   position: absolute;
   display: none;
+}
+
+.fixeds {
+  position: fixed !important;
 }
 
 /* Show the checkmark when checked */

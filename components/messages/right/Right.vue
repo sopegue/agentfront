@@ -7,7 +7,7 @@
             <figure class="image rounded-full relative is-36x36">
               <img
                 class="rounded-full is-36x36"
-                src="https://ofalooback.herokuapp.com/images/8.jpg"
+                src="https://ofaloo.blob.core.windows.net/ofaloo/8.jpg"
                 alt="Placeholder image"
               />
               <span
@@ -59,7 +59,7 @@
             <figure class="image rounded-full relative is-36x36">
               <img
                 class="rounded-full is-36x36"
-                src="https://ofalooback.herokuapp.com/images/8.jpg"
+                src="https://ofaloo.blob.core.windows.net/ofaloo/8.jpg"
                 alt="Placeholder image"
               />
             </figure>
@@ -80,7 +80,7 @@
             <figure class="image rounded-full relative is-36x36">
               <img
                 class="rounded-full is-36x36"
-                src="https://ofalooback.herokuapp.com/images/8.jpg"
+                src="https://ofaloo.blob.core.windows.net/ofaloo/8.jpg"
                 alt="Placeholder image"
               />
             </figure>

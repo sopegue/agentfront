@@ -308,6 +308,7 @@
                     <imgmodaled
                       v-if="imgmodaled"
                       :imgs="images"
+                      :position="pos"
                       :indexer="active"
                       @close="close"
                     ></imgmodaled>
@@ -404,11 +405,13 @@
                     >
                       <div class="px-2">
                         <div class="w-max-128">
-                          <label for="sizez" class="size-12 pb-0.8 block"
+                          <label
+                            :for="'sizezss' + j"
+                            class="size-12 pb-0.8 block"
                             >Description de l'image</label
                           >
                           <input
-                            id="sizez"
+                            :id="'sizezss' + j"
                             v-model="desc[active]"
                             type="text"
                             placeholder="Max 255 caractères..."
@@ -603,7 +606,13 @@
             Caractéristiques de la propriété
           </h4>
           <div class="flex flex-col space-y-4">
-            <div :class="{ noclick: type === 'Studio' }">
+            <div
+              :class="{
+                noclick: ['Studio', 'Magasin', 'Bureau', 'Terrain'].includes(
+                  type
+                ),
+              }"
+            >
               <div class="w-max-128">
                 <label for="sizrexz" class="size-13 pb-0.8 block"
                   >Nombre de pièces (chambres)</label
@@ -784,7 +793,7 @@ export default {
       loaded: false,
       bigsize: false,
       imgmodaled: false,
-
+      pos: { x: 0, y: 0 },
       noadresse: false,
       noprice: false,
       noinfos: false,
@@ -870,6 +879,11 @@ export default {
     infos() {
       this.noinfos = false
     },
+    type(nv, ov) {
+      if (['Studio', 'Magasin', 'Bureau', 'Terrain'].includes(nv)) {
+        this.pieces = '0'
+      }
+    },
     prix(nv, ov) {
       if (this.$linker.isNumber(nv)) this.prix = nv
       else this.prix = ov
@@ -898,9 +912,6 @@ export default {
       if (this.$linker.isNumber(nv)) this.garage = nv
       else this.garage = ov
     },
-  },
-  updated() {
-    console.log(this.desc)
   },
   methods: {
     async insta(val = 500) {
@@ -970,7 +981,6 @@ export default {
         !this.notiktok &&
         !this.noinsta
       ) {
-        console.log('nice')
         this.erfile = false
         const form = new FormData()
         form.append('type', this.type)
@@ -1002,11 +1012,22 @@ export default {
         form.append('outdoor', this.outdoor)
         form.append('energy', this.energy)
         const data = await this.$axios.$post('property', form)
-        console.log(data)
+
         if (data.status === '201') {
-          location.assign(
+          this.$store.commit('set_message', 'Propriété ajoutée')
+          this.$store.commit('set_green', true)
+          setTimeout(() => {
+            this.$store.commit('set_green', false)
+          }, 3000)
+          this.$router.push(
             '/dashboard/proprietes/mes-proprietes/viewed?id=' + data.id
           )
+        } else {
+          this.$store.commit('set_message', 'Désolé, une erreur est survenue')
+          this.$store.commit('set_red', true)
+          setTimeout(() => {
+            this.$store.commit('set_red', false)
+          }, 3000)
         }
         this.store = false
       }
@@ -1050,7 +1071,9 @@ export default {
         }
       }, 300)
     },
-    open() {
+    open(e) {
+      this.pos.x = e.pageX - 60
+      this.pos.y = e.pageY - 60
       this.imgmodaled = true
     },
     typeprop(val) {

@@ -8,7 +8,7 @@
             drawerh: modaled,
             draweros: !modaled,
           }"
-          class="bg-gray-800 drawer h-full fixed w180mins z-15"
+          class="bg-gray-800 drawer h-full fixed w180mins z-26"
         >
           <div class="w-full h-15 border-b b-rg">
             <div class="m-0-auto w-fit vertical-center">
@@ -188,7 +188,7 @@
           }"
         >
           <div
-            class="w-full h-15 sticky top-0 bg-white border-b z-40 pl-2 pr-4 pt-1.5"
+            class="w-full h-15 sticky top-0 bg-white border-b z-25 pl-2 pr-4 pt-1.5"
             :class="{
               'w-min-186': size < 740 && curoute === '/dashboard/inbox',
             }"
@@ -304,12 +304,21 @@
                 </div>
               </div>
               <div
-                v-show="false"
+                v-show="red"
                 class="fixed w-fit top-0 -right-5 mt-13.5 appearxhz z-10"
               >
                 <span
                   class="block text-c bg-red-500 py-3 px-10 text-white font-semibold size-12"
-                  >Oops désolé, il y a eu une erreur!</span
+                  >{{ message }}</span
+                >
+              </div>
+              <div
+                v-show="green"
+                class="fixed w-fit top-0 -right-5 mt-13.5 appearxhz z-10"
+              >
+                <span
+                  class="block text-c bg-green-600 py-3 px-10 text-white font-semibold size-12"
+                  >{{ message }}</span
                 >
               </div>
             </div>
@@ -367,6 +376,15 @@ export default {
     },
     size() {
       return this.$store.state.size
+    },
+    green() {
+      return this.$store.state.green
+    },
+    red() {
+      return this.$store.state.red
+    },
+    message() {
+      return this.$store.state.message
     },
   },
   watch: {
