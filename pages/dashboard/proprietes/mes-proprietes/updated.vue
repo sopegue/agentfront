@@ -1181,10 +1181,7 @@ export default {
         form.append('indoor', this.indoor)
         form.append('outdoor', this.outdoor)
         form.append('energy', this.energy)
-        const data = await this.$axios.$post(
-          'http://localhost:8000/api/aproperty/update',
-          form
-        )
+        const data = await this.$axios.$post('aproperty/update', form)
         if (data.status === '201') {
           this.$store.commit('set_message', 'Propriété modifiée')
           this.$store.commit('set_green', true)
