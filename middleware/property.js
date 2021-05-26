@@ -3,5 +3,5 @@ export default function ({ store, route, redirect }) {
     route.path === '/dashboard/proprietes' ||
     route.path === '/dashboard/proprietes/'
   )
-    return redirect('/dashboard/proprietes/mes-proprietes')
+    return redirect('/dashboard/proprietes/mes-proprietes?tri=plus-recent')
 }

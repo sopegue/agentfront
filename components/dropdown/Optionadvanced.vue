@@ -51,7 +51,14 @@
         :class="{ left: left, right: right }"
       >
         <div class="dropdown-content bg-white border h231max overflow-y-auto">
-          <div v-show="what === 'typeprop'">
+          <div
+            v-show="
+              what === 'typeprop' ||
+              what === 'typeloc' ||
+              what === 'typecarac' ||
+              what === 'typedispo'
+            "
+          >
             <a
               v-for="(element, i) in currencies"
               :key="i"
@@ -67,7 +74,6 @@
               <label
                 v-show="i > 0"
                 class="flex w-full h-full align-center container"
-                @click="setcur(element)"
                 ><span
                   class="size-125 -mt-012x multichoice-categ"
                   :class="{
@@ -200,6 +206,7 @@
   </div>
 </template>
 <script>
+// import newVue from '~/pages/dashboard/proprietes/mes-proprietes/new.vue'
 export default {
   props: {
     what: {
@@ -210,9 +217,37 @@ export default {
       type: Boolean,
       default: false,
     },
+    reinit: {
+      type: Boolean,
+      default: false,
+    },
+    pmin: {
+      type: String,
+      default: '-1',
+    },
+    pmax: {
+      type: String,
+      default: '-1',
+    },
+    smin: {
+      type: String,
+      default: '-1',
+    },
+    smax: {
+      type: String,
+      default: '-1',
+    },
+    piece: {
+      type: String,
+      default: '-1',
+    },
     currencies: {
       type: Array,
       default: () => ['yo'],
+    },
+    check: {
+      type: Array,
+      default: () => [],
     },
     right: {
       type: Boolean,
@@ -240,6 +275,9 @@ export default {
           this.date = newvalue.toDateString()
       },
     },
+    init() {
+      return this.reinit === true
+    },
   },
   watch: {
     checkedCateg(newv, oldv) {
@@ -251,6 +289,18 @@ export default {
         if (this.what.includes('type'))
           this.currency =
             '+ ' + (newv.length - 1).toString() + ' options sélectionnées'
+      }
+      if (this.what === 'typeprop') {
+        this.$emit('prop', newv)
+      }
+      if (this.what === 'typeloc') {
+        this.$emit('loc', newv)
+      }
+      if (this.what === 'typecarac') {
+        this.$emit('carac', newv)
+      }
+      if (this.what === 'typedispo') {
+        this.$emit('dispo', newv)
       }
     },
     min(newcateg, oldcateg) {
@@ -280,26 +330,118 @@ export default {
         this.checkedCateg = [this.currencies[0]]
       }
     },
+    init(newv, oldv) {
+      if (newv) {
+        this.currency = this.currencies[0]
+        this.checkedCateg = [this.currencies[0]]
+        this.$emit('deal')
+      }
+    },
   },
   mounted() {
     this.currency = this.currencies[0]
     this.checkedCateg = [this.currencies[0]]
+    this.checkQuery()
   },
   methods: {
+    checkQuery() {
+      if (this.what === 'typeloc' || this.what === 'typeprop') {
+        if (this.check.length > 0) {
+          this.checkedCateg =
+            this.what === 'typeloc'
+              ? ['Ventes et locations']
+              : ['Tous types de propriétés']
+          this.check.forEach((element) => {
+            const el = element.replace(/--/g, ' ')
+            if (this.currencies.includes(el)) this.checkedCateg.push(el)
+          })
+        }
+      }
+      if (this.what === 'typecarac' || this.what === 'typedispo') {
+        if (this.check.length > 0) {
+          this.checkedCateg =
+            this.what === 'typecarac'
+              ? ['Toutes caractéristiques']
+              : ['Disponible(s)']
+          this.check.forEach((element) => {
+            const el = element.replace(/--/g, ' ')
+            if (this.currencies.includes(el)) this.checkedCateg.push(el)
+          })
+        }
+      }
+      if (this.what === 'bed') {
+        if (+this.piece > -1) {
+          if (+this.piece === 1) {
+            this.checkedCateg = [
+              'Tous types de pièces',
+              this.piece + ' pièce et plus',
+            ]
+            this.setcur(this.piece + ' pièce et plus')
+          } else if ([2, 3, 4, 5].includes(+this.piece)) {
+            this.checkedCateg = [
+              'Tous types de pièces',
+              this.piece + ' pièces et plus',
+            ]
+            this.setcur(this.piece + ' pièces et plus')
+          }
+        } else {
+          this.checkedCateg = ['Tous types de pièces']
+          this.setcur('Tous types de pièces')
+        }
+      }
+      if (this.what === 'price') {
+        if (+this.pmin > -1 || +this.pmax > -1) {
+          this.checkedCateg = []
+          if (+this.pmin > -1) {
+            this.min = this.pmin
+            this.setprice()
+          }
+          if (+this.pmax > -1) {
+            this.max = this.pmax
+            this.setprice()
+          }
+        } else {
+          this.setcur('Tous types de prix')
+          this.checkedCateg = ['Tous types de prix']
+        }
+      }
+      if (this.what === 'size') {
+        if (+this.smin > -1 || +this.smax > -1) {
+          this.checkedCateg = []
+          if (+this.smin > -1) {
+            this.min = this.smin
+            this.setsize()
+          }
+          if (+this.smax > -1) {
+            this.max = this.smax
+            this.setsize()
+          }
+        } else {
+          this.setcur('Tous types de taille')
+          this.checkedCateg = ['Tous types de taille']
+        }
+      }
+    },
     hide() {
       this.focused = false
     },
     setcur(cur) {
       this.currency = cur
-      if (
-        this.what === 'achat' ||
-        this.what === 'bed' ||
-        this.what === 'price' ||
-        this.what === 'garage' ||
-        this.what === 'date' ||
-        this.what === 'size'
-      )
+      if (this.what === 'bed') {
+        this.$emit(
+          'bed',
+          this.currency === 'Tous types de pièces' ? '-1' : this.currency
+        )
         this.hide()
+      }
+      if (this.what === 'size') {
+        this.$emit('size', { min: -1, max: -1 })
+        this.hide()
+      }
+      if (this.what === 'price') {
+        this.$emit('price', { min: -1, max: -1 })
+        this.hide()
+      }
     },
     ischecked(value) {
       return this.checkedCateg.includes(value)
@@ -322,40 +464,52 @@ export default {
     },
     setprice() {
       if (this.min !== '' && this.max !== '') {
-        if (+this.min <= +this.max)
+        if (+this.min <= +this.max) {
+          this.$emit('price', { min: +this.min, max: +this.max })
           this.currency =
             'Min: ' +
             this.formatMoney(this.min) +
             ' FCFA & Max: ' +
             this.formatMoney(this.max) +
             ' FCFA'
+        }
         if (+this.min > +this.max) {
+          this.$emit('price', { min: +this.min, max: -1 })
           this.max = ''
           this.currency = 'Min: ' + this.formatMoney(this.min) + ' FCFA'
         }
       } else if (this.min === '' && this.max !== '') {
+        this.$emit('price', { max: +this.max, min: -1 })
         this.currency = 'Max: ' + this.formatMoney(this.max) + ' FCFA'
-      } else if (this.max === '' && this.min !== '')
+      } else if (this.max === '' && this.min !== '') {
+        this.$emit('price', { min: +this.min, max: -1 })
         this.currency = 'Min: ' + this.formatMoney(this.min) + ' FCFA'
+      }
       this.hide()
     },
     setsize() {
       if (this.min !== '' && this.max !== '') {
-        if (+this.min <= +this.max)
+        if (+this.min <= +this.max) {
+          this.$emit('size', { min: +this.min, max: +this.max })
           this.currency =
             'Min: ' +
             this.formatMoney(this.min) +
             ' m² & Max: ' +
             this.formatMoney(this.max) +
             ' m²'
+        }
         if (+this.min > +this.max) {
+          this.$emit('size', { min: +this.min, max: -1 })
           this.max = ''
           this.currency = 'Min: ' + this.formatMoney(this.min) + ' m²'
         }
       } else if (this.min === '' && this.max !== '') {
+        this.$emit('size', { max: +this.max, min: -1 })
         this.currency = 'Max: ' + this.formatMoney(this.max) + ' m²'
-      } else if (this.max === '' && this.min !== '')
+      } else if (this.max === '' && this.min !== '') {
+        this.$emit('size', { min: +this.min, max: -1 })
         this.currency = 'Min: ' + this.formatMoney(this.min) + ' m²'
+      }
       this.hide()
     },
   },

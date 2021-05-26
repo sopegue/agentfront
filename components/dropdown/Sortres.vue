@@ -50,7 +50,7 @@
             @click="setcur(element)"
           >
             <span
-              class="size-125"
+              class="size-13"
               :class="{ 'font-semibold': currency === element }"
               >{{ element }}</span
             >
@@ -67,6 +67,10 @@ export default {
       type: String,
       default: 'Trouver une propriété',
     },
+    sort: {
+      type: String,
+      default: 'Le plus récent',
+    },
   },
   data() {
     return {
@@ -82,7 +86,18 @@ export default {
   },
   computed: {},
   mounted() {
-    this.currency = this.currencies[0]
+    if (this.sort === 'plus-recent') {
+      this.currency = 'Le plus récent'
+    }
+    if (this.sort === 'prix-croissant') {
+      this.currency = 'Prix croissant'
+    }
+    if (this.sort === 'prix-decroissant') {
+      this.currency = 'Prix décroissant'
+    }
+    if (this.sort === 'plus-ancien') {
+      this.currency = 'Le plus ancien'
+    }
   },
   methods: {
     hide() {
@@ -90,6 +105,18 @@ export default {
     },
     setcur(cur) {
       this.currency = cur
+      if (this.currency === 'Le plus récent') {
+        this.$emit('res', 'plus-recent')
+      }
+      if (this.currency === 'Prix croissant') {
+        this.$emit('res', 'prix-croissant')
+      }
+      if (this.currency === 'Prix décroissant') {
+        this.$emit('res', 'prix-decroissant')
+      }
+      if (this.currency === 'Le plus ancien') {
+        this.$emit('res', 'plus-ancien')
+      }
       this.hide()
     },
   },

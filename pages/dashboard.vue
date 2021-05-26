@@ -61,7 +61,7 @@
               ><span class="text-white">Accueil</span></nuxt-link
             >
             <nuxt-link
-              to="/dashboard/proprietes"
+              to="/dashboard/proprietes?tri=plus-recent"
               :class="{
                 'focuss ': curoute.includes('/dashboard/proprietes'),
               }"

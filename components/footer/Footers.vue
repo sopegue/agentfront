@@ -14,62 +14,74 @@
     <div
       class="flex w-fit m-0-auto sm:px-10 px-10 pt-5 border-b pb-5"
       :class="{
-        'space-x-10 align-center': size > 767,
-        'flex-col': size <= 767,
+        'space-x-10 align-center': size > 1200,
+        'flex-col': size <= 1200,
       }"
     >
-      <div :class="{ 'py-3': size <= 767 }">
+      <div :class="{ 'py-3': size <= 1200 }">
         <div class="mt-2">
           <nuxt-link
             to="/ofalooagent/guide"
             class="underline-hover text-c w-fit text-white block size-13"
-            :class="{ 'w-autoxx': size <= 767 }"
+            :class="{ 'w-autoxx': size <= 1200 }"
             >Guide d'utilisations</nuxt-link
           >
         </div>
       </div>
-      <div :class="{ 'py-3': size <= 767 }">
+      <div :class="{ 'py-3': size <= 1200 }">
         <div class="mt-2">
           <nuxt-link
             to="/ofalooagent/condition-utilisation"
             class="underline-hover text-c w-fit text-white block size-13"
-            :class="{ 'w-autoxx': size <= 767 }"
+            :class="{ 'w-autoxx': size <= 1200 }"
             >Conditions d'utilisations</nuxt-link
           >
         </div>
       </div>
-      <div :class="{ 'py-3': size <= 767 }">
+      <div :class="{ 'py-3': size <= 1200 }">
+        <div class="mt-2">
+          <nuxt-link
+            to="/ofalooagent/politique"
+            class="underline-hover text-c w-fit text-white block size-13"
+            :class="{ 'w-autoxx': size <= 1200 }"
+            >Politique de confidentialité</nuxt-link
+          >
+        </div>
+      </div>
+      <div :class="{ 'py-3': size <= 1200 }">
         <div class="mt-2">
           <nuxt-link
             to="/ofalooagent/contactez-nous"
             class="underline-hover text-c w-fit text-white block size-13"
-            :class="{ 'w-autoxx': size <= 767 }"
+            :class="{ 'w-autoxx': size <= 1200 }"
             >Nous contacter</nuxt-link
           >
         </div>
       </div>
-      <div :class="{ 'py-3': size <= 767 }">
+      <div
+        class="flex flex-col justify-center"
+        :class="{ 'py-3': size <= 1200 }"
+      >
         <h4
           class="w-fit text-white text-c block font-semibold size-16"
-          :class="{ 'w-autoxx': size <= 767 }"
+          :class="{ 'w-autoxx': size <= 1200 }"
         >
           <home
             :color="'#fff'"
             :scale="10"
             :textcolor="'#fff'"
             :textscale="50"
-            :class="{ 'w-fit m-0-auto': size <= 767 }"
           ></home>
         </h4>
         <div class="mt-2 flex flex-col space-y-1">
           <a
             class="w-fit text-white text-c block size-13"
-            :class="{ 'w-autoxx': size <= 767 }"
+            :class="{ 'w-autoxx': size <= 1200 }"
             >Rejoignez-nous sur les réseaux</a
           >
           <p
-            class="flex align-center space-x-4 text-white pt-1"
-            :class="{ 'w-autoxx': size <= 767 }"
+            class="flex align-center justify-center space-x-4 text-white pt-1"
+            :class="{ 'w-autoxx': size <= 1200 }"
           >
             <a href="#" target="_blank"
               ><i class="fab fa-twitter size-20 clickable color-white"></i

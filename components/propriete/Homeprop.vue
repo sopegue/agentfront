@@ -79,7 +79,15 @@
             <button
               class="border-none size-11 text-white rounded ml-1 mb-1 button bg-black-tr both-centers"
             >
-              <label :for="'aaezz'" class="flex align-center container">
+              <label
+                :for="'aaezz'"
+                class="flex align-center container"
+                @click="
+                  checkedCategv.length > 0
+                    ? markAsSold('unsold')
+                    : markAsSold('sold')
+                "
+              >
                 <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
                   >Marquer comme louée</span
                 >
@@ -127,7 +135,15 @@
         <button
           class="border-none size-11 text-white rounded ml-1 mt-3 mb button bg-black-tr"
         >
-          <label :for="'azaezz'" class="flex align-center container">
+          <label
+            :for="'azaezz'"
+            class="flex align-center container"
+            @click="
+              checkedCategv.length > 0
+                ? markAsSold('unsold')
+                : markAsSold('sold')
+            "
+          >
             <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
               >Marquer comme vendue</span
             >
@@ -141,21 +157,27 @@
           </label>
         </button>
       </div>
-      <div class="flex flex-col mt-1" @click="$router.push('/propriete')">
+      <div
+        class="flex clickable flex-col mt-1"
+        @click="
+          $router.push(
+            '/dashboard/proprietes/mes-proprietes/viewed?id=' +
+              property.property.id
+          )
+        "
+      >
         <div class="flex align-center justify-between">
           <h4 class="logo-color size-15 font-semibold">
             {{ property.property.type }}
           </h4>
           <div>
-            <nuxt-link
+            <a
               v-if="property.property.proposition === 'Vente totale'"
-              to="/"
               title="Le prix indiqué représente le montant à payer pour toute la propriété"
               class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
-              >{{ property.property.proposition }}</nuxt-link
-            ><nuxt-link
+              >{{ property.property.proposition }}</a
+            ><a
               v-if="property.property.proposition === 'Vente partielle'"
-              to="/"
               :title="
                 'Le prix indiqué représente ' +
                 property.property.percentage_part +
@@ -165,18 +187,16 @@
               class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
               >{{ property.property.proposition }} ({{
                 property.property.percentage_part + '%'
-              }})</nuxt-link
+              }})</a
             >
-            <nuxt-link
+            <a
               v-if="property.property.proposition === 'Location totale'"
-              to="/"
               title="Le prix indiqué représente le montant à payer pour toute la propriété"
               class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
-              >{{ property.property.proposition }}</nuxt-link
+              >{{ property.property.proposition }}</a
             >
-            <nuxt-link
+            <a
               v-if="property.property.proposition === 'Location partielle'"
-              to="/"
               :title="
                 'Le prix indiqué représente ' +
                 property.property.percentage_part +
@@ -186,7 +206,7 @@
               class="px-3 py-1 z-20 block w-fit rounded btn-008489s color-008489 font-semibold size-11 my-1"
               >{{ property.property.proposition }} ({{
                 property.property.percentage_part + '%'
-              }})</nuxt-link
+              }})</a
             >
           </div>
         </div>
@@ -265,7 +285,10 @@
             ></span
           >
         </div>
-        <div class="flex align-center space-x-1 mt-1">
+        <div
+          :title="property.adresse + ', ' + property.ville"
+          class="flex align-center space-x-1 mt-1"
+        >
           <svg
             class="w-6 h-6 logo-color -ml-1"
             fill="none"
@@ -289,10 +312,48 @@
           <span class="logo-color size-14 over">{{ property.adresse }}</span>
         </div>
         <div class="mt-2">
-          <img
-            src="https://ofalooback.herokuapp.com/images/prop.png"
-            alt="Placeholder image"
-          />
+          <div class="flex align-center space-x-3.5">
+            <div
+              v-if="property.property.bed > 0"
+              :title="property.property.bed + ' pièce(s)'"
+              class="flex align-center space-x-1.5"
+            >
+              <span>
+                <i class="fas size-16 logo-color fa-bed"></i>
+              </span>
+              <span class="logo-color">{{ property.property.bed }}</span>
+            </div>
+            <div
+              v-if="property.property.bath > 0"
+              :title="property.property.bath + ' salles(s) de bain(s)'"
+              class="flex align-center space-x-1.5"
+            >
+              <span>
+                <i class="fas size-16 logo-color fa-shower"></i>
+              </span>
+              <span class="logo-color">{{ property.property.bath }}</span>
+            </div>
+            <div
+              v-if="property.property.garage > 0"
+              :title="property.property.garage + ' garage(s)'"
+              class="flex align-center space-x-1.5"
+            >
+              <span>
+                <i class="fas size-16 logo-color fa-warehouse"></i>
+              </span>
+              <span class="logo-color">{{ property.property.garage }}</span>
+            </div>
+            <div
+              v-if="property.property.taille > 0"
+              :title="'La taille de la propriété'"
+              class="flex align-center space-x-1.5"
+            >
+              <span>
+                <i class="fas size-16 logo-color fa-ruler-vertical"></i>
+              </span>
+              <span class="logo-color">{{ property.property.taille }} m²</span>
+            </div>
+          </div>
         </div>
         <div v-show="checkedCateg.length > 0" class="z-10 pt-2.5">
           <div
@@ -313,10 +374,14 @@
         </div>
         <div class="mt-2 flex align-center space-x-3 justify-between">
           <div>
-            <span class="color-363636 size-11">Ajoutée il y a 3 jours</span>
-          </div>
-          <div>
-            <span class="color-363636 size-11">Modifiée il y a 1 jour</span>
+            <span class="color-363636 size-11"
+              >Ajoutée
+              {{
+                $utility.dating(
+                  new Date($moment(property.property.created_at).format())
+                )
+              }}</span
+            >
           </div>
         </div>
       </div>
@@ -371,18 +436,6 @@ export default {
       )
     },
   },
-  watch: {
-    checkedCategv(nv, ov) {
-      if (nv.length > 0) {
-        this.markAsSold('sold')
-      } else this.markAsSold('unsold')
-    },
-    checkedCateg(nv, ov) {
-      if (nv.length > 0) {
-        this.markAsRent('rented')
-      } else this.markAsRent('unrented')
-    },
-  },
   mounted() {
     if (this.dataOk) {
       this.checkedCategv =
@@ -411,13 +464,29 @@ export default {
       const data = await this.$axios.$get(
         'property/sell/' + val + '/' + this.property.property.id
       )
-      console.log(data)
+      if (data.status === '200') {
+        if (data.message === 'sold') {
+          this.checkedCategv = ['Vendue']
+        }
+        if (data.message === 'unsold') {
+          this.checkedCategv = []
+        }
+      } else if (this.checkedCategv.length > 0) this.checkedCategv = []
+      else this.checkedCategv = ['Vendue']
     },
     async markAsRent(val) {
       const data = await this.$axios.$get(
         'property/rent/' + val + '/' + this.property.property.id
       )
-      console.log(data)
+      if (data.status === '200') {
+        if (data.message === 'rented') {
+          this.checkedCateg = ['Vendue']
+        }
+        if (data.message === 'unrented') {
+          this.checkedCateg = []
+        }
+      } else if (this.checkedCateg.length > 0) this.checkedCateg = []
+      else this.checkedCateg = ['Vendue']
     },
   },
 }

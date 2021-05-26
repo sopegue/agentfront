@@ -9,7 +9,7 @@
       </div>
       <nuxt-link
         to="/dashboard/proprietes/mes-proprietes/new"
-        class="border-none flex align-center size-12 text-white px-3.5 pb-1.5 rounded button btn-008489 self-end"
+        class="border-none flex align-center size-12 text-white px-3.5 pb-2 py-2 rounded button btn-008489 self-end"
       >
         <svg
           class="mr-1.5"
@@ -58,12 +58,14 @@
           </button>
           <div class="flex space-x-5 align-center pl-5">
             <button
-              class="border-none size-11 text-white px-5 pb-1 rounded button is-light"
+              class="border-none size-12 text-white px-5 pb-1.5 rounded button is-light"
+              @click="initialiser"
             >
               Réinitialiser
             </button>
             <button
-              class="border-none size-11 text-white px-5 pb-1 rounded button btn-008489"
+              class="border-none size-12 text-white px-5 pb-1.5 rounded button btn-008489"
+              @click="go"
             >
               Appliquer
             </button>
@@ -71,15 +73,25 @@
         </div>
         <div v-if="true" class="flex space-x-5 align-center">
           <div class="flex align-center space-x-5">
-            <span class="logo-color size-12">1-18 sur 633 resultat</span>
-            <sortres></sortres>
+            <span class="logo-color size-13">1-18 sur 633 resultat</span>
+            <sortres :sort="sort" @res="res"></sortres>
           </div>
         </div>
       </div>
       <div class="flex align-center justify-center w-full flex-wrap">
         <optionadvanced
-          :what="'typeprop'"
+          :what="'typeloc'"
           :left="true"
+          :reinit="reinit"
+          :check="
+            $route.query.t_type
+              ? Array.isArray($route.query.t_type)
+                ? $route.query.t_type
+                : $route.query.t_type !== ''
+                ? [$route.query.t_type]
+                : []
+              : []
+          "
           :currencies="[
             'Ventes et locations',
             'Vente totale',
@@ -87,10 +99,22 @@
             'Location totale',
             'Location partielle',
           ]"
+          @deal="deal"
+          @loc="loc"
         ></optionadvanced
         ><optionadvanced
           :what="'typeprop'"
           :left="true"
+          :reinit="reinit"
+          :check="
+            $route.query.t_prop
+              ? Array.isArray($route.query.t_prop)
+                ? $route.query.t_prop
+                : $route.query.t_prop !== ''
+                ? [$route.query.t_prop]
+                : []
+              : []
+          "
           :currencies="[
             'Tous types de propriétés',
             'Maison',
@@ -101,51 +125,78 @@
             'Magasin',
             'Terrain',
           ]"
+          @prop="prop"
+          @deal="deal"
         ></optionadvanced
         ><optionadvanced
           :what="'bed'"
           :left="true"
+          :reinit="reinit"
+          :piece="$route.query.bed ? $route.query.bed : '-1'"
           :currencies="[
             'Tous types de pièces',
-            'Studio',
             '1 pièce et plus',
             '2 pièces et plus',
             '3 pièces et plus',
             '4 pièces et plus',
             '5 pièces et plus',
           ]"
+          @deal="deal"
+          @bed="beding"
         ></optionadvanced
         ><optionadvanced
           :what="'price'"
           :left="true"
+          :reinit="reinit"
+          :pmin="$route.query.p_min ? $route.query.p_min : '-1'"
+          :pmax="$route.query.p_max ? $route.query.p_max : '-1'"
           :currencies="['Tous types de prix']"
+          @deal="deal"
+          @price="price"
         ></optionadvanced
         ><optionadvanced
           :what="'size'"
           :left="true"
-          :currencies="[
-            'Tous types de taille',
-            'Entre 100 m² et 500 m²',
-            'Entre 500 m² et 1000 m²',
-            'Entre 1000 m² et 5000 m²',
-          ]"
+          :reinit="reinit"
+          :smin="$route.query.s_min ? $route.query.s_min : '-1'"
+          :smax="$route.query.s_max ? $route.query.s_max : '-1'"
+          :currencies="['Tous types de taille']"
+          @deal="deal"
+          @size="sizing"
         ></optionadvanced>
         <optionadvanced
-          :what="'typeprop'"
+          :what="'typecarac'"
           :left="true"
-          :currencies="[
-            'Toutes caractéristiques',
-            'Garage',
-            'Piscine',
-            'Gazon',
-            'Terrain de sport',
-            'Climatiseur',
-          ]"
+          :reinit="reinit"
+          :check="
+            $route.query.t_carac
+              ? Array.isArray($route.query.t_carac)
+                ? $route.query.t_carac
+                : $route.query.t_carac !== ''
+                ? [$route.query.t_carac]
+                : []
+              : []
+          "
+          :currencies="all"
+          @deal="deal"
+          @carac="carac"
         ></optionadvanced>
         <optionadvanced
-          :what="'typeprop'"
+          :what="'typedispo'"
           :right="true"
-          :currencies="['Disponible', 'Vendue', 'Louée']"
+          :reinit="reinit"
+          :check="
+            $route.query.t_dispo
+              ? Array.isArray($route.query.t_dispo)
+                ? $route.query.t_dispo
+                : $route.query.t_dispo !== ''
+                ? [$route.query.t_dispo]
+                : []
+              : []
+          "
+          :currencies="['Disponible(s)', 'Vendue(s)', 'Louée(s)']"
+          @deal="deal"
+          @dispo="dispo"
         ></optionadvanced>
       </div>
     </div>
@@ -166,6 +217,7 @@
 </template>
 
 <script>
+import { all } from '@/options/all'
 import Optionadvanced from '~/components/dropdown/Optionadvanced.vue'
 import Sortres from '~/components/dropdown/Sortres.vue'
 import Pagination from '~/components/pagination/Pagination.vue'
@@ -173,11 +225,29 @@ import Homeprop from '~/components/propriete/Homeprop.vue'
 import Searchbar from '~/components/search/Searchbar.vue'
 export default {
   components: { Searchbar, Sortres, Optionadvanced, Homeprop, Pagination },
+  middleware: 'prop',
   async asyncData() {
     const properties = await fetch(
       'https://ofalooback.herokuapp.com/api/properties/bytype/Studio'
     ).then((res) => res.json())
     return { properties }
+  },
+  data() {
+    return {
+      all,
+      init: false,
+      sort: '',
+      op: 0,
+      bed: -1,
+      p_min: -1,
+      p_max: -1,
+      s_min: -1,
+      s_max: -1,
+      t_type: [],
+      t_prop: [],
+      t_carac: [],
+      t_dispo: [],
+    }
   },
   computed: {
     curoute() {
@@ -185,6 +255,121 @@ export default {
     },
     size() {
       return this.$store.state.size
+    },
+    nb() {
+      return this.op
+    },
+    reinit() {
+      return this.init === true
+    },
+  },
+  watch: {
+    nb(nv, ov) {
+      if (nv === 7) {
+        this.init = false
+        this.op = 0
+      }
+    },
+  },
+  beforeMount() {
+    this.sort = this.$route.query.tri
+  },
+  mounted() {
+    console.log(this.$route.query)
+  },
+  methods: {
+    initialiser() {
+      this.init = true
+    },
+    deal() {
+      this.op++
+    },
+    res(val) {
+      this.sort = val
+      this.go()
+    },
+    loc(val) {
+      if (val.length > 0) {
+        this.t_type = val.slice(1)
+      } else this.t_type = []
+    },
+    prop(val) {
+      if (val.length > 0) {
+        this.t_prop = val.slice(1)
+      } else this.t_prop = []
+    },
+    carac(val) {
+      if (val.length > 0) {
+        this.t_carac = val.slice(1)
+      } else this.t_carac = []
+    },
+    dispo(val) {
+      if (val.length > 0) {
+        this.t_dispo = val.slice(1)
+      } else this.t_dispo = []
+    },
+    sizing(val) {
+      this.s_min = val.min
+      this.s_max = val.max
+    },
+    price(val) {
+      this.p_min = val.min
+      this.p_max = val.max
+    },
+    beding(val) {
+      if (
+        [
+          '1 pièce et plus',
+          '2 pièces et plus',
+          '3 pièces et plus',
+          '4 pièces et plus',
+          '5 pièces et plus',
+        ].includes(val)
+      ) {
+        this.bed = +val.charAt(0)
+      } else {
+        this.bed = -1
+      }
+    },
+    go() {
+      let url = '/dashboard/proprietes/mes-proprietes?tri=' + this.sort
+      if (this.t_type.length > 0 && this.t_type.length < 4) {
+        this.t_type.forEach((element) => {
+          url += '&t_type=' + element.replace(/\s/g, '--')
+        })
+      }
+      if (this.t_prop.length > 0 && this.t_prop.length < 7) {
+        this.t_prop.forEach((element) => {
+          url += '&t_prop=' + element.replace(/\s/g, '--')
+        })
+      }
+      if (this.t_carac.length > 0 && this.t_carac.length < 26) {
+        this.t_carac.forEach((element) => {
+          url += '&t_carac=' + element.replace(/\s/g, '--')
+        })
+      }
+      if (this.t_dispo.length > 0 && this.t_dispo.length < 2) {
+        this.t_dispo.forEach((element) => {
+          url += '&t_dispo=' + element.replace(/\s/g, '--')
+        })
+      }
+      if (this.s_min > -1) {
+        url += '&s_min=' + this.s_min
+      }
+      if (this.s_max > -1) {
+        url += '&s_max=' + this.s_max
+      }
+      if (this.p_min > -1) {
+        url += '&p_min=' + this.p_min
+      }
+      if (this.p_max > -1) {
+        url += '&p_max=' + this.p_max
+      }
+      if (this.bed > -1) {
+        url += '&bed=' + this.bed
+      }
+      console.log(url)
+      this.$router.push(url)
     },
   },
 }
