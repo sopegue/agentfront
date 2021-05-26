@@ -73,8 +73,9 @@
         </div>
       </div>
     </div>
-    <div
+    <form
       v-click-outside="hidesearch"
+      autocomplete="none"
       class="relative w-min-48 w-max-74 flex align-center mr-10"
       @submit.prevent="searchingme"
     >
@@ -192,7 +193,7 @@
           }
         "
       ></a>
-    </div>
+    </form>
     <button
       class="h-full btn-008489 absolute h-9 right-0 px-3 rounded-tr rounded-br text-white size-13 font-semibold"
       @click="searching"
