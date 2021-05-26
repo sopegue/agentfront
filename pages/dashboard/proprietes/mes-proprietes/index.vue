@@ -65,7 +65,7 @@
             </button>
             <button
               class="border-none size-12 text-white px-5 pb-1.5 rounded button btn-008489"
-              @click="go"
+              @click="gone"
             >
               Appliquer
             </button>
@@ -166,7 +166,7 @@
         ></optionadvanced>
         <optionadvanced
           :what="'typecarac'"
-          :left="true"
+          :right="true"
           :reinit="reinit"
           :check="
             $route.query.t_carac
@@ -225,7 +225,7 @@ import Homeprop from '~/components/propriete/Homeprop.vue'
 import Searchbar from '~/components/search/Searchbar.vue'
 export default {
   components: { Searchbar, Sortres, Optionadvanced, Homeprop, Pagination },
-  middleware: 'prop',
+  // middleware: 'prop',
   async asyncData() {
     const properties = await fetch(
       'https://ofalooback.herokuapp.com/api/properties/bytype/Studio'
@@ -237,6 +237,7 @@ export default {
       all,
       init: false,
       sort: '',
+      old: '',
       op: 0,
       bed: -1,
       p_min: -1,
@@ -256,6 +257,9 @@ export default {
     size() {
       return this.$store.state.size
     },
+    urlfrom() {
+      return this.$store.state.url
+    },
     nb() {
       return this.op
     },
@@ -265,19 +269,30 @@ export default {
   },
   watch: {
     nb(nv, ov) {
-      if (nv === 7) {
+      if (nv > 6) {
         this.init = false
         this.op = 0
+        this.bed = -1
+        this.p_min = -1
+        this.p_max = -1
+        this.s_min = -1
+        this.s_max = -1
       }
     },
   },
-  watchQuery: true,
-  beforeMount() {
+  // watchQuery: true,
+  created() {
     this.sort = this.$route.query.tri
-    console.log(this.sort)
-  },
-  mounted() {
-    console.log(this.$route.query)
+    if (
+      ![
+        'plus-recent',
+        'prix-croissant',
+        'prix-decroissant',
+        'plus-ancien',
+      ].includes(this.sort)
+    ) {
+      this.sort = 'plus-recent'
+    }
   },
   methods: {
     initialiser() {
@@ -285,10 +300,11 @@ export default {
     },
     deal() {
       this.op++
+      console.log(this.op)
     },
     res(val) {
       this.sort = val
-      this.go()
+      this.gone()
     },
     loc(val) {
       if (val.length > 0) {
@@ -333,10 +349,15 @@ export default {
         this.bed = -1
       }
     },
-    go() {
-      if (this.sort === '') this.sort = 'plus-recent'
+    gone() {
+      if (this.sort === '') {
+        if (this.old === '') this.sort = 'plus-recent'
+        else this.sort = this.old
+      } else {
+        this.old = this.sort
+      }
       // eslint-disable-next-line no-var
-      var url = '/dashboard/proprietes/mes-proprietes?tri=' + this.sort
+      let url = '/dashboard/proprietes/mes-proprietes?tri=' + this.sort
       if (this.t_type.length > 0 && this.t_type.length < 4) {
         this.t_type.forEach((element) => {
           url += '&t_type=' + element.replace(/\s/g, '--')
@@ -372,8 +393,10 @@ export default {
       if (this.bed > -1) {
         url += '&bed=' + this.bed
       }
-      console.log(url)
       this.$router.push(url)
+      setTimeout(() => {
+        location.reload()
+      }, 100)
     },
   },
 }

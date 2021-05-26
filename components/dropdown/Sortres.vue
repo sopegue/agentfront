@@ -69,7 +69,7 @@ export default {
     },
     sort: {
       type: String,
-      default: 'Le plus récent',
+      default: 'plus-recent',
     },
   },
   data() {
@@ -84,19 +84,23 @@ export default {
       ],
     }
   },
-  computed: {},
+  computed: {
+    ssort() {
+      return this.sort
+    },
+  },
   mounted() {
-    if (this.sort === 'plus-recent') {
-      this.currency = 'Le plus récent'
+    if (this.ssort === 'plus-recent') {
+      this.setcurs('Le plus récent')
     }
-    if (this.sort === 'prix-croissant') {
-      this.currency = 'Prix croissant'
+    if (this.ssort === 'prix-croissant') {
+      this.setcurs('Prix croissant')
     }
-    if (this.sort === 'prix-decroissant') {
-      this.currency = 'Prix décroissant'
+    if (this.ssort === 'prix-decroissant') {
+      this.setcurs('Prix décroissant')
     }
-    if (this.sort === 'plus-ancien') {
-      this.currency = 'Le plus ancien'
+    if (this.ssort === 'plus-ancien') {
+      this.setcurs('Le plus ancien')
     }
   },
   methods: {
@@ -118,6 +122,9 @@ export default {
         this.$emit('res', 'plus-ancien')
       }
       this.hide()
+    },
+    setcurs(cur) {
+      this.currency = cur
     },
   },
 }

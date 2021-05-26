@@ -1,6 +1,8 @@
 export default function ({ store, route, redirect }) {
   if (route.query.tri === null || route.query.tri === undefined)
     return redirect('/dashboard/proprietes/mes-proprietes?tri=plus-recent')
+  if (route.query.bed === null || route.query.bed === undefined)
+    return redirect('/dashboard/proprietes/mes-proprietes?tri=plus-recent')
   if (
     route.query.tri !== null &&
     route.query.tri !== undefined &&

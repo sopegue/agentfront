@@ -11,6 +11,7 @@ export const state = () => ({
   green: false,
   red: false,
   message: '',
+  url: '',
 })
 
 export const mutations = {
@@ -26,6 +27,9 @@ export const mutations = {
   },
   set_Domload(state, value) {
     state.domloading = value
+  },
+  set_url(state, value) {
+    state.url = value
   },
   set_Size(state, value) {
     state.size = value
