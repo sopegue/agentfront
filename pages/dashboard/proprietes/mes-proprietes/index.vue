@@ -271,8 +271,10 @@ export default {
       }
     },
   },
+  watchQuery: true,
   beforeMount() {
     this.sort = this.$route.query.tri
+    console.log(this.sort)
   },
   mounted() {
     console.log(this.$route.query)
@@ -332,7 +334,9 @@ export default {
       }
     },
     go() {
-      let url = '/dashboard/proprietes/mes-proprietes?tri=' + this.sort
+      if (this.sort === '') this.sort = 'plus-recent'
+      // eslint-disable-next-line no-var
+      var url = '/dashboard/proprietes/mes-proprietes?tri=' + this.sort
       if (this.t_type.length > 0 && this.t_type.length < 4) {
         this.t_type.forEach((element) => {
           url += '&t_type=' + element.replace(/\s/g, '--')
