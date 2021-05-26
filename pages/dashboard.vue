@@ -44,7 +44,8 @@
             <nuxt-link
               to="/dashboard"
               :class="{
-                'focuss ': curoute === '/dashboard',
+                'focuss ':
+                  curoute === '/dashboard' || curoute === '/dashboard/',
               }"
               class="dropdown-itemww flex align-center space-x-2.5 px-6"
               ><svg
@@ -85,7 +86,9 @@
             <nuxt-link
               to="/dashboard/statistiques"
               :class="{
-                'focuss ': curoute === '/dashboard/statistiques',
+                'focuss ':
+                  curoute === '/dashboard/statistiques' ||
+                  curoute === '/dashboard/statistiques/',
               }"
               class="dropdown-itemww clickable text-white flex align-center space-x-2.5 px-6"
               ><svg
@@ -182,15 +185,21 @@
           class="w-full h-full border-l border-r border-white"
           :class="{
             'go-x240': modaled,
-            fixed: curoute === '/dashboard/inbox',
+            fixed:
+              curoute === '/dashboard/inbox' || curoute === '/dashboard/inbox/',
             'w-min-186 overflow-x-auto':
-              size < 740 && curoute === '/dashboard/inbox',
+              size < 740 &&
+              (curoute === '/dashboard/inbox' ||
+                curoute === '/dashboard/inbox/'),
           }"
         >
           <div
             class="w-full h-15 sticky top-0 bg-white border-b z-25 pl-2 pr-4 pt-1.5"
             :class="{
-              'w-min-186': size < 740 && curoute === '/dashboard/inbox',
+              'w-min-186':
+                size < 740 &&
+                (curoute === '/dashboard/inbox' ||
+                  curoute === '/dashboard/inbox/'),
             }"
           >
             <div class="vertical-center flex align-center space-x-3 h-fit">
@@ -326,7 +335,9 @@
           <div
             class="flex flex-col"
             :class="{
-              'fixed w-full h-full': curoute === '/dashboard/inbox',
+              'fixed w-full h-full':
+                curoute === '/dashboard/inbox' ||
+                curoute === '/dashboard/inbox/',
             }"
           >
             <nuxt-child
@@ -335,7 +346,11 @@
               class="px-4 py-5 w-full h-full"
             />
           </div>
-          <footers v-if="curoute !== '/dashboard/inbox'"></footers>
+          <footers
+            v-if="
+              curoute !== '/dashboard/inbox' || curoute !== '/dashboard/inbox/'
+            "
+          ></footers>
         </div>
       </div>
     </div>
