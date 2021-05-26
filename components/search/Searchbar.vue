@@ -170,7 +170,7 @@
       <input
         id="byuyc"
         v-model="search"
-        autocomplete="none"
+        autocomplete="off"
         class="w-full h-full outline-none pl-2 pr-9 size-15 bg-white rounded-tl rounded-bl"
         :class="{
           'ml-2': color !== 'text-white',
