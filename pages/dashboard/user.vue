@@ -102,9 +102,9 @@
                 {{ $linker.capitalizeEach($auth.user.name) }}
                 ({{ $linker.capitalizeEach($auth.user.agence.name) }})</span
               >
-              <span class="size-14 color-363636f">{{
-                $auth.user.main_email
-              }}</span>
+              <span class="size-14 color-363636f"
+                >{{ $auth.user.main_email }} (email principal)</span
+              >
             </div>
           </div>
           <div
@@ -121,9 +121,13 @@
               :class="{
                 'dropdown-item': size >= 850,
                 'font-semibold color-008489 items-perm cursor-default':
-                  curoute === '/dashboard/user' && size >= 850,
+                  (curoute === '/dashboard/user' ||
+                    curoute === '/dashboard/user/') &&
+                  size >= 850,
                 'font-semibold list-active':
-                  curoute === '/dashboard/user' && size < 850,
+                  (curoute === '/dashboard/user' ||
+                    curoute === '/dashboard/user/') &&
+                  size < 850,
               }"
               >Mes informations</nuxt-link
             >
@@ -134,9 +138,13 @@
               :class="{
                 'dropdown-item': size >= 850,
                 'font-semibold color-008489 items-perm cursor-default':
-                  curoute === '/dashboard/user/enterprise' && size >= 850,
+                  (curoute === '/dashboard/user/enterprise' ||
+                    curoute === '/dashboard/user/enterprise/') &&
+                  size >= 850,
                 'font-semibold list-active':
-                  curoute === '/dashboard/user/enterprise' && size < 850,
+                  (curoute === '/dashboard/user/enterprise' ||
+                    curoute === '/dashboard/user/enterprise/') &&
+                  size < 850,
               }"
               >Informations agence</nuxt-link
             >
@@ -147,9 +155,13 @@
               :class="{
                 'dropdown-item': size >= 850,
                 'font-semibold color-008489 items-perm cursor-default':
-                  curoute === '/dashboard/user/password' && size >= 850,
+                  (curoute === '/dashboard/user/password' ||
+                    curoute === '/dashboard/user/password/') &&
+                  size >= 850,
                 'font-semibold list-active':
-                  curoute === '/dashboard/user/password' && size < 850,
+                  (curoute === '/dashboard/user/password' ||
+                    curoute === '/dashboard/user/password/') &&
+                  size < 850,
               }"
               >Mot de passe</nuxt-link
             >
@@ -161,23 +173,31 @@
               :class="{
                 'dropdown-item': size >= 850,
                 'font-semibold color-008489 items-perm cursor-default':
-                  curoute === '/dashboard/user/parametres' && size >= 850,
+                  (curoute === '/dashboard/user/parametres' ||
+                    curoute === '/dashboard/user/parametres/') &&
+                  size >= 850,
                 'font-semibold list-active':
-                  curoute === '/dashboard/user/parametres' && size < 850,
+                  (curoute === '/dashboard/user/parametres' ||
+                    curoute === '/dashboard/user/parametres/') &&
+                  size < 850,
               }"
               >Paramètres du compte</nuxt-link
             >
             <nuxt-link
               v-else
-              to="/user/parametres"
+              to="/dashboard/user/parametres"
               prefetch
               class="tyu size-13"
               :class="{
                 'dropdown-item': size >= 850,
                 'font-semibold color-008489 items-perm cursor-default':
-                  curoute === '/user/parametres' && size >= 850,
+                  (curoute === '/dashboard/user/parametres' ||
+                    curoute === '/dashboard/user/parametres/') &&
+                  size >= 850,
                 'font-semibold list-active':
-                  curoute === '/user/parametres' && size < 850,
+                  (curoute === '/dashboard/user/parametres' ||
+                    curoute === '/dashboard/user/parametres/') &&
+                  size < 850,
               }"
               >Paramètres</nuxt-link
             >

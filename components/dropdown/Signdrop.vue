@@ -28,7 +28,7 @@
               />
               <div class="flex flex-col">
                 <div class="size-13 color-363636 w-30 over">
-                  {{ $auth.user.email }}
+                  {{ $auth.user.main_email }}
                 </div>
                 <div class="size-14 font-semibold logo-color w-30 over">
                   {{ $linker.capitalizeEach($auth.user.agence.name) }}
@@ -60,7 +60,7 @@
             <nuxt-link
               v-show="$auth.user.agence.super === 'yes'"
               to="/ofalooagent/guide#superagent"
-              class="button bg-transparent mr-4 px-3 py-0.5 rounded border-008489ss size-12 color-008489"
+              class="button bg-transparent mr-4 px-3 pb-1.5 rounded border-008489ss size-12 color-008489"
               >Super agent</nuxt-link
             >
           </div>
@@ -123,9 +123,9 @@
               /></svg
             ><span>Notifications</span>
             <button
-              class="p-2 button scale absolute h-8 w-8 font-semibold bg-red-500w text-white rounded-full border-white top-0 right-1.5"
+              class="button scale absolute h-8 w-8 font-semibold bg-red-500w text-white rounded-full border-none top-0 right-1.5"
             >
-              <span class="text-white size-12 -mt-0.6 block">5</span>
+              <span class="text-white size-12 ml-0.5">99+</span>
             </button></nuxt-link
           >
           <nuxt-link

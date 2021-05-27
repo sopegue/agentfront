@@ -73,35 +73,6 @@
             </button>
           </div>
           <div
-            v-if="property.property.proposition.includes('Location')"
-            class="absolute z-10 bottom-0 left-0"
-          >
-            <button
-              class="border-none size-11 text-white rounded ml-1 mb-1 button bg-black-tr both-centers"
-            >
-              <label
-                :for="'aaezzaa' + property.property.id"
-                class="flex align-center container"
-                @click="
-                  checkedCategv.length > 0
-                    ? markAsSold('unsold')
-                    : markAsSold('sold')
-                "
-              >
-                <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
-                  >Marquer comme louée</span
-                >
-                <input
-                  :id="'aaezzaa' + property.property.id"
-                  v-model="checkedCateg"
-                  type="checkbox"
-                  value="Louée"
-                />
-                <span class="checkmark"></span>
-              </label>
-            </button>
-          </div>
-          <div
             v-if="wannadeleted"
             class="p-2 absolute border bg-white flex flex-col top-0 left-0 right-0 bottom-0 z-20"
           >
@@ -133,12 +104,12 @@
       </div>
       <div v-if="property.property.proposition.includes('Vente')" class="z-10">
         <button
-          class="border-none size-11 text-white rounded ml-1 mt-3 mb button bg-black-tr"
+          class="border-none size-11 text-white rounded ml-1 mt-3 button bg-black-tr"
         >
           <label
             :for="'azaezz' + property.property.id"
             class="flex align-center container"
-            @click="
+            @click.stop="
               checkedCategv.length > 0
                 ? markAsSold('unsold')
                 : markAsSold('sold')
@@ -152,6 +123,35 @@
               v-model="checkedCategv"
               type="checkbox"
               value="Vendue"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </button>
+      </div>
+      <div
+        v-if="property.property.proposition.includes('Location')"
+        class="z-10"
+      >
+        <button
+          class="border-none size-11 text-white rounded ml-1 mt-3 button bg-black-tr"
+        >
+          <label
+            :for="'aaezzaa' + property.property.id"
+            class="flex align-center container"
+            @click.stop="
+              checkedCateg.length > 0
+                ? markAsRent('unrented')
+                : markAsRent('rented')
+            "
+          >
+            <span class="w-fit text-white size-11 -mt-0.2 multichoice-categ"
+              >Marquer comme louée</span
+            >
+            <input
+              :id="'aaezzaa' + property.property.id"
+              v-model="checkedCateg"
+              type="checkbox"
+              value="Louée"
             />
             <span class="checkmark"></span>
           </label>
@@ -355,18 +355,29 @@
             </div>
           </div>
         </div>
-        <div v-show="checkedCateg.length > 0" class="z-10 pt-2.5">
+        <div
+          v-show="checkedCateg.length > 0"
+          class="z-10 pt-4 cursor-default"
+          @click.stop=""
+        >
           <div
-            class="border-none flex space-x-3 pb-2 size-11 text-white rounded mr-1 mb-1 button bg-black-tr"
+            class="border-none flex items-center space-x-3 pb-2 size-11 text-white rounded mr-1 mb-1 button bg-black-tr"
           >
             <div>
               <span class="size-11 text-white block color-363636 pb-1"
                 >Date de fin location</span
               >
-              <input class="no-outlines border px-1 size-12" type="date" />
+              <input
+                v-model="dates"
+                class="no-outlines cursor-pointer border rounded px-1 py-1 size-12"
+                type="date"
+                :min="currentdate"
+                @change="datechange"
+              />
             </div>
             <button
-              class="border-none h-fit self-end size-11 text-white px-2 pb-1 rounded button is-light"
+              class="border-none self-end size-11 text-white px-2 py-1.4 rounded button is-light"
+              @click.stop="dating"
             >
               Appliquer
             </button>
@@ -402,6 +413,8 @@ export default {
   },
   data() {
     return {
+      dates: this.$moment(new Date()).format('YYYY-MM-DD'),
+      currentdate: this.$moment(new Date()).format('YYYY-MM-DD'),
       hovered: false,
       quick: false,
       wannadeleted: false,
@@ -442,23 +455,73 @@ export default {
         this.property.property.sold === 'no' ? [] : ['Vendue']
 
       this.checkedCateg = this.property.property.rent === 'no' ? [] : ['Louée']
+      if (this.property.property.fin_loc !== null) {
+        this.dates = this.$moment(this.property.property.fin_loc).format(
+          'YYYY-MM-DD'
+        )
+      }
     }
   },
   methods: {
     async deletion() {
       this.delete = true
-      const data = await this.$axios.$delete(
-        'property/' + this.property.property.id
-      )
-      console.log(data)
-      this.delete = false
-      location.assign('/dashboard/proprietes/mes-proprietes')
+      try {
+        const data = await this.$axios.$delete(
+          'property/' + this.property.property.id
+        )
+        if (data.status === '200') {
+          this.$store.commit('set_message', 'Propriété supprimée')
+          this.$store.commit('set_green', true)
+          setTimeout(() => {
+            this.$store.commit('set_green', false)
+          }, 1800)
+          location.reload()
+        } else {
+          this.$store.commit('set_message', 'Désolé, une erreur est survenue')
+          this.$store.commit('set_red', true)
+          setTimeout(() => {
+            this.$store.commit('set_red', false)
+          }, 1800)
+          this.delete = false
+          this.wannadeleted = false
+        }
+      } catch (error) {
+        this.$store.commit('set_message', 'Désolé, une erreur est survenue')
+        this.$store.commit('set_red', true)
+        setTimeout(() => {
+          this.$store.commit('set_red', false)
+        }, 1800)
+        this.delete = false
+        this.wannadeleted = false
+      }
     },
     close_quick() {
       this.quick = false
     },
     show_quick() {
       this.quick = true
+    },
+    async dating() {
+      const data = await this.$axios.$post('property/date', {
+        date: this.dates,
+        id: this.property.property.id,
+      })
+      if (data.status === '200') {
+        this.$store.commit('set_message', 'Enregistré')
+        this.$store.commit('set_green', true)
+        setTimeout(() => {
+          this.$store.commit('set_green', false)
+        }, 1800)
+      } else {
+        this.$store.commit('set_message', 'Une erreur est survenue')
+        this.$store.commit('set_red', true)
+        setTimeout(() => {
+          this.$store.commit('set_red', false)
+        }, 1800)
+      }
+    },
+    datechange(e) {
+      this.dates = e.target.value
     },
     async markAsSold(val) {
       const data = await this.$axios.$get(
@@ -471,8 +534,20 @@ export default {
         if (data.message === 'unsold') {
           this.checkedCategv = []
         }
-      } else if (this.checkedCategv.length > 0) this.checkedCategv = []
-      else this.checkedCategv = ['Vendue']
+        this.$store.commit('set_message', 'Enregistré')
+        this.$store.commit('set_green', true)
+        setTimeout(() => {
+          this.$store.commit('set_green', false)
+        }, 1800)
+      } else {
+        this.$store.commit('set_message', 'Une erreur est survenue')
+        this.$store.commit('set_red', true)
+        setTimeout(() => {
+          this.$store.commit('set_red', false)
+        }, 1800)
+        if (this.checkedCategv.length > 0) this.checkedCategv = []
+        if (this.checkedCategv.length <= 0) this.checkedCategv = ['Vendue']
+      }
     },
     async markAsRent(val) {
       const data = await this.$axios.$get(
@@ -480,13 +555,25 @@ export default {
       )
       if (data.status === '200') {
         if (data.message === 'rented') {
-          this.checkedCateg = ['Vendue']
+          this.checkedCateg = ['Louée']
         }
         if (data.message === 'unrented') {
           this.checkedCateg = []
         }
-      } else if (this.checkedCateg.length > 0) this.checkedCateg = []
-      else this.checkedCateg = ['Vendue']
+        this.$store.commit('set_message', 'Enregistré')
+        this.$store.commit('set_green', true)
+        setTimeout(() => {
+          this.$store.commit('set_green', false)
+        }, 1800)
+      } else {
+        this.$store.commit('set_message', 'Une erreur est survenue')
+        this.$store.commit('set_red', true)
+        setTimeout(() => {
+          this.$store.commit('set_red', false)
+        }, 1800)
+        if (this.checkedCateg.length > 0) this.checkedCateg = []
+        if (this.checkedCateg.length <= 0) this.checkedCateg = ['Louée']
+      }
     },
   },
 }

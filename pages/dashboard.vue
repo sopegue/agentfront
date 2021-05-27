@@ -61,8 +61,8 @@
                 /></svg
               ><span class="text-white">Accueil</span></nuxt-link
             >
-            <a
-              href="/dashboard/proprietes?tri=plus-recent"
+            <nuxt-link
+              to="/dashboard/proprietes?tri=plus-recent"
               :class="{
                 'focuss ': curoute.includes('/dashboard/proprietes'),
               }"
@@ -81,7 +81,7 @@
                   fill="#fff"
                 />
               </svg>
-              <span class="text-white">Mes propriétés</span></a
+              <span class="text-white">Mes propriétés</span></nuxt-link
             >
             <nuxt-link
               to="/dashboard/statistiques"
@@ -284,10 +284,10 @@
                       class="text-white relative size-12 rounded font-semibold rounded-full p-2 hover:shadow"
                     >
                       <button
-                        class="p-2 button scale absolute h-8 w-8 font-semibold bg-red-500w text-white rounded-full border-white top-0 right-0 -mr-2.5 -mt-1.5"
+                        class="button scale absolute h-8 w-8 font-semibold bg-red-500w text-white rounded-full border-none -top-2 -right-2"
                       >
-                        <span class="text-white size-12 -mt-0.6 block"
-                          >5</span
+                        <span class="text-white size-12 ml-0.5"
+                          >99+</span
                         ></button
                       ><svg
                         width="24"
@@ -317,7 +317,7 @@
                 class="fixed w-fit top-0 -right-5 mt-13.5 appearxhz z-10"
               >
                 <span
-                  class="block text-c bg-red-500 py-3 px-10 text-white font-semibold size-12"
+                  class="block text-c bg-red-500 py-2 px-10 text-white font-semibold size-12"
                   >{{ message }}</span
                 >
               </div>
@@ -326,7 +326,7 @@
                 class="fixed w-fit top-0 -right-5 mt-13.5 appearxhz z-10"
               >
                 <span
-                  class="block text-c bg-green-600 py-3 px-10 text-white font-semibold size-12"
+                  class="block text-c bg-green-600 py-2 px-10 text-white font-semibold size-12"
                   >{{ message }}</span
                 >
               </div>

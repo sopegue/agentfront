@@ -411,7 +411,7 @@ export default {
               this.pwdsuccess = true
               time = setTimeout(() => {
                 this.pwdsuccess = false
-              }, 3000)
+              }, 1800)
               this.curpwd = ''
               this.pwd = ''
               this.pwdcf = ''

@@ -718,11 +718,13 @@ import Imgmodaled from '~/components/modal/Imgmodaled.vue'
 export default {
   components: { Typeprop, Imgs, Imgmodaled, editor: Editor },
   middleware: 'query',
-  async asyncData({ query, $axios }) {
+  async asyncData({ query, $axios, redirect }) {
     const property = await $axios.$get(
       'https://ofalooback.herokuapp.com/api/aproperty/agent/' + query.id
     )
-
+    if (property.message) {
+      return redirect('/dashboard/proprietes/mes-proprietes?tri=plus-recent')
+    }
     return { property }
   },
   data() {
@@ -847,6 +849,11 @@ export default {
       if (this.$linker.isNumber(nv)) this.taille = nv
       else this.taille = ov
     },
+    dataOk(nv, ov) {
+      if (nv) {
+        this.fillImages()
+      }
+    },
     cp(nv, ov) {
       if (this.$linker.isNumber(nv)) this.cp = nv
       else this.cp = ov
@@ -895,8 +902,7 @@ export default {
   },
 
   mounted() {
-    if (this.property.data.status !== '404' || this.property.data.length > 0)
-      this.fill()
+    if (this.property.data.status !== '404') this.fill()
     this.not_found()
   },
   // beforeMount() {
@@ -945,11 +951,15 @@ export default {
     //   } else location.assign('/dashboard/proprietes/mes-proprietes')
     // },
     not_found() {
-      if (
-        this.property.data.length === 0 ||
-        this.property.data.status === '404'
-      )
-        location.assign('/dashboard/proprietes/mes-proprietes')
+      setTimeout(() => {
+        if (
+          this.property.data.length === 0 ||
+          this.property.data.status === '404'
+        )
+          this.$router.push(
+            '/dashboard/proprietes/mes-proprietes?tri=plus-recent'
+          )
+      }, 10)
     },
     fill() {
       this.type = this.property.data.property.type
@@ -1187,7 +1197,7 @@ export default {
           this.$store.commit('set_green', true)
           setTimeout(() => {
             this.$store.commit('set_green', false)
-          }, 3000)
+          }, 1800)
           this.$router.push(
             '/dashboard/proprietes/mes-proprietes/viewed?id=' + data.id
           )
@@ -1196,7 +1206,7 @@ export default {
           this.$store.commit('set_red', true)
           setTimeout(() => {
             this.$store.commit('set_red', false)
-          }, 3000)
+          }, 1800)
         }
         this.store = false
       } else this.store = false

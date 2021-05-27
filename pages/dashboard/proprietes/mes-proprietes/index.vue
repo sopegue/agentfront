@@ -46,7 +46,7 @@
       <div v-else-if="tot <= 0" class="flex space-x-5 align-center pb-2">
         <div class="flex align-center space-x-5">
           <span class="logo-color size-13"
-            >0 résultats<span v-if="search !== ''" class="size-13"
+            >0 résultat<span v-if="search !== ''" class="size-13"
               >, mot clé
               <span class="font-semibold size-13">"{{ search }}"</span></span
             ></span
@@ -134,6 +134,7 @@
           "
           :currencies="[
             'Tous types de propriétés',
+            'Studio',
             'Maison',
             'Appartement',
             'Villa',
@@ -370,8 +371,13 @@ export default {
       this.init = true
     },
     ss(val) {
-      this.irl = '/dashboard/proprietes/mes-proprietes?'
-      this.irl += 'search=' + val + '&'
+      if (val !== '') {
+        this.irl = '/dashboard/proprietes/mes-proprietes?'
+        this.irl += 'search=' + val + '&'
+      } else {
+        this.search = ''
+        this.irl = '/dashboard/proprietes/mes-proprietes?'
+      }
       this.gone()
     },
     deal() {

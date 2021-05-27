@@ -7,7 +7,7 @@
       <div class="flex align-center space-x-3 justify-between px-5 pt-2">
         <button
           class="button is-light rounded py-0.5 px-4"
-          @click="$router.push('/dashboard/proprietes/mes-proprietes')"
+          @click="$router.go(-1)"
         >
           <svg
             width="20"
@@ -103,7 +103,10 @@
               d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
             ></path>
           </svg>
-          <span class="logo-color size-14">{{ property.data.adresse }}</span>
+          <span class="logo-color size-14"
+            >{{ property.data.adresse.adresse }},
+            {{ property.data.adresse.ville }}</span
+          >
         </div>
         <button
           v-click-outside="hideshare"
@@ -654,11 +657,14 @@ import Insta from '~/components/social/Insta.vue'
 export default {
   components: { Bigads, Yt, Tiktok, Insta },
   middleware: 'query',
-  async asyncData({ query }) {
-    const property = await fetch(
-      'https://ofalooback.herokuapp.com/api/property/' + query.id
-    ).then((res) => res.json())
-    return { property }
+  async asyncData({ query, $axios, redirect }) {
+    const property = await $axios.$get(
+      'https://ofalooback.herokuapp.com/api/aproperty/agent/' + query.id
+    )
+    if (property.message) {
+      return redirect('/dashboard/proprietes/mes-proprietes?tri=plus-recent')
+    }
+    return { property, charged: true }
   },
   data() {
     return {
@@ -713,6 +719,16 @@ export default {
         this.property.data.property !== undefined
       )
     },
+    dl() {
+      return (
+        this.property !== undefined &&
+        this.property.data !== undefined &&
+        this.property.data.length > 0
+      )
+    },
+    cc() {
+      return this.charged === true
+    },
     links() {
       return this.property.data.links !== null &&
         this.property.data.links !== undefined
@@ -747,11 +763,27 @@ export default {
       return this.$store.state.size
     },
   },
-  created() {
-    this.fillImages()
+  watch: {
+    dataOk(nv, ov) {
+      if (nv) {
+        this.fillImages()
+      }
+    },
+    cc(nv, ov) {
+      if (nv) {
+        if (this.property.data.length > 0) this.fillImages()
+        else
+          this.$router.push(
+            '/dashboard/proprietes/mes-proprietes?tri=plus-recent'
+          )
+      }
+    },
   },
   mounted() {
     this.checkOptions()
+    if (this.dl || this.cc) this.fillImages()
+    if (this.cc && this.property.data.length <= 0)
+      this.$router.push('/dashboard/proprietes/mes-proprietes?tri=plus-recent')
   },
   methods: {
     checkOptions() {
@@ -774,29 +806,56 @@ export default {
     },
     async deletion() {
       this.delete = true
-      const data = await this.$axios.$delete('property/' + this.$route.query.id)
-      console.log(data)
-      this.delete = false
-      location.assign('/dashboard/proprietes/mes-proprietes')
+      try {
+        const data = await this.$axios.$delete(
+          'property/' + this.$route.query.id
+        )
+        if (data.status === '200') {
+          this.$store.commit('set_message', 'Propriété supprimée')
+          this.$store.commit('set_green', true)
+          setTimeout(() => {
+            this.$store.commit('set_green', false)
+          }, 1800)
+          this.$router.go(-1)
+        } else {
+          this.$store.commit('set_message', 'Désolé, une erreur est survenue')
+          this.$store.commit('set_red', true)
+          setTimeout(() => {
+            this.$store.commit('set_red', false)
+          }, 1800)
+          this.delete = false
+          this.wannadeleted = false
+        }
+      } catch (error) {
+        this.$store.commit('set_message', 'Désolé, une erreur est survenue')
+        this.$store.commit('set_red', true)
+        setTimeout(() => {
+          this.$store.commit('set_red', false)
+        }, 1800)
+        this.delete = false
+        this.wannadeleted = false
+      }
     },
     fillImages() {
-      for (let index = 0; index < this.property.data.images.length; index++) {
-        const element = this.property.data.images[index]
-        if (element.principal === 'yes') {
-          this.images.push(
-            'https://ofaloo.blob.core.windows.net/ofaloo/' + element.url
-          )
-          break
+      if (this.property.data.images !== undefined) {
+        for (let index = 0; index < this.property.data.images.length; index++) {
+          const element = this.property.data.images[index]
+          if (element.principal === 'yes') {
+            this.images.push(
+              'https://ofaloo.blob.core.windows.net/ofaloo/' + element.url
+            )
+            break
+          }
         }
+        for (let index = 0; index < this.property.data.images.length; index++) {
+          const element = this.property.data.images[index]
+          if (element.principal === 'no')
+            this.images.push(
+              'https://ofaloo.blob.core.windows.net/ofaloo/' + element.url
+            )
+        }
+        this.ades = this.images
       }
-      for (let index = 0; index < this.property.data.images.length; index++) {
-        const element = this.property.data.images[index]
-        if (element.principal === 'no')
-          this.images.push(
-            'https://ofaloo.blob.core.windows.net/ofaloo/' + element.url
-          )
-      }
-      this.ades = this.images
     },
     hideshare() {
       this.share = false

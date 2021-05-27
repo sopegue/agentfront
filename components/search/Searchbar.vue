@@ -325,9 +325,7 @@ export default {
     },
     searching() {
       this.inputfocused = false
-      if (this.search !== '') {
-        this.$emit('search', this.search)
-      }
+      this.$emit('search', this.search)
     },
     autoff() {
       const myel = document.getElementById('byuyc')

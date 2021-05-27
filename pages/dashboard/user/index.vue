@@ -491,7 +491,7 @@ export default {
           await this.$auth.fetchUser()
           time = setTimeout(() => {
             this.success = false
-          }, 3000)
+          }, 1800)
         }
         if (data.status === '500') {
           this.accounting = false

@@ -1,9 +1,6 @@
 <template>
   <div class="py-5 px-6 bg-white">
-    <button
-      class="button is-light rounded py-0.5 px-4"
-      @click="$router.push('/dashboard/proprietes/mes-proprietes')"
-    >
+    <button class="button is-light rounded py-0.5 px-4" @click="$router.go(-1)">
       <svg
         width="20"
         height="20"
@@ -1018,7 +1015,7 @@ export default {
           this.$store.commit('set_green', true)
           setTimeout(() => {
             this.$store.commit('set_green', false)
-          }, 3000)
+          }, 1800)
           this.$router.push(
             '/dashboard/proprietes/mes-proprietes/viewed?id=' + data.id
           )
@@ -1027,7 +1024,7 @@ export default {
           this.$store.commit('set_red', true)
           setTimeout(() => {
             this.$store.commit('set_red', false)
-          }, 3000)
+          }, 1800)
         }
         this.store = false
       }
