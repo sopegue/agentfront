@@ -322,6 +322,7 @@ export default {
         this.p_max = -1
         this.s_min = -1
         this.s_max = -1
+        this.search = ''
         this.curr = 1
         this.irl = '/dashboard/proprietes/mes-proprietes?'
         this.$router.push(this.irl)
