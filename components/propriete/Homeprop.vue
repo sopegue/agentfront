@@ -80,7 +80,7 @@
               class="border-none size-11 text-white rounded ml-1 mb-1 button bg-black-tr both-centers"
             >
               <label
-                :for="'aaezz'"
+                :for="'aaezzaa' + property.property.id"
                 class="flex align-center container"
                 @click="
                   checkedCategv.length > 0
@@ -92,7 +92,7 @@
                   >Marquer comme louée</span
                 >
                 <input
-                  :id="'aaezz'"
+                  :id="'aaezzaa' + property.property.id"
                   v-model="checkedCateg"
                   type="checkbox"
                   value="Louée"
@@ -136,7 +136,7 @@
           class="border-none size-11 text-white rounded ml-1 mt-3 mb button bg-black-tr"
         >
           <label
-            :for="'azaezz'"
+            :for="'azaezz' + property.property.id"
             class="flex align-center container"
             @click="
               checkedCategv.length > 0
@@ -148,7 +148,7 @@
               >Marquer comme vendue</span
             >
             <input
-              :id="'azaezz'"
+              :id="'azaezz' + property.property.id"
               v-model="checkedCategv"
               type="checkbox"
               value="Vendue"
