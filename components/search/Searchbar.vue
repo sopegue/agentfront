@@ -5,83 +5,15 @@
       border: color !== 'text-white',
     }"
   >
-    <div>
-      <div
-        v-click-outside="hide"
-        class="dropdown border-r"
-        :class="{ 'is-active': focused }"
-      >
-        <div class="dropdown-trigger">
-          <client-only>
-            <div
-              aria-haspopup="true"
-              aria-controls="dropdown-menu"
-              class="flex align-center space-x-1 h-full bg-transparent clickable select-none px-2"
-              :class="{
-                'border-r': color !== 'text-white',
-                'border-none': color === 'text-white',
-              }"
-              @click="
-                {
-                  focused = !focused
-                }
-              "
-            >
-              <p class="flex align-center">
-                <span class="size-13 font-semibold block w-fit logo-color">{{
-                  currency
-                }}</span>
-                <svg
-                  class="w-4 h-4 relative top-03x ml-px logo-color transform"
-                  :class="{ 'rotate-180 trans-x300': focused }"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </p>
-            </div>
-          </client-only>
-        </div>
-        <div
-          id="dropdown-menu"
-          class="dropdown-menu walele"
-          role="menu"
-          :class="{
-            '-mt-2': color !== 'text-white',
-          }"
-        >
-          <div class="dropdown-content bg-white border">
-            <a
-              v-for="(element, i) in currencies"
-              :key="i"
-              class="dropdown-item clickable flex align-center space-x-1"
-              @click="setcur(element)"
-            >
-              <span
-                class="size-125"
-                :class="{ 'font-semibold': currency === element }"
-                >{{ element }}</span
-              >
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
     <form
       v-click-outside="hidesearch"
       autocomplete="none"
-      class="relative w-min-48 w-max-74 flex align-center mr-10"
+      class="relative w-min-48 w-max-105 flex align-center"
       @submit.prevent="searchingme"
     >
       <div
         v-show="inputfocused && (searches.length > 0 || saved.length > 0)"
-        class="rounded-bl border rounded-br bg-white shadow-xs w-full absolute z-12 top-0 mt-7.2 -ml-0.8 pb-1"
+        class="rounded-bl border rounded-br bg-white shadow-xs w-full absolute z-12 top-0 mt-7.2 -ml-0.2 pb-1"
       >
         <client-only>
           <div
@@ -172,7 +104,7 @@
         id="byuyc"
         v-model="search"
         autocomplete="off"
-        class="w-full h-full outline-none pl-2 pr-9 size-15 bg-white rounded-tl rounded-bl"
+        class="w-full h-full outline-none pl-2 pr-9 size-14 bg-white rounded-tl rounded-bl"
         :class="{
           'ml-2': color !== 'text-white',
         }"
@@ -223,6 +155,10 @@ export default {
       type: String,
       default: 'text-white',
     },
+    reinit: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -243,6 +179,9 @@ export default {
   computed: {
     curoute() {
       return this.$route.path
+    },
+    init() {
+      return this.reinit === true
     },
     size() {
       return this.$store.state.size
@@ -276,11 +215,25 @@ export default {
         }
       }
     },
+    init(nv, ov) {
+      if (nv) {
+        this.search = ''
+      }
+    },
   },
   mounted() {
     this.currency = this.currencies[0]
     this.autoff()
     this.checkSearch()
+    if (
+      this.$route.query.search &&
+      this.$route.query.search !== null &&
+      this.$route.query.search !== ''
+    ) {
+      if (!Array.isArray(this.$route.query.search)) {
+        this.search = this.$route.query.search.replace('--', ', ')
+      }
+    }
   },
   methods: {
     hidesearch() {
@@ -294,6 +247,7 @@ export default {
     callme() {
       this.pendingmail()
         .then((res) => {
+          // console.log(res)
           this.results = res.adresse
           const text = document.querySelectorAll('.search-res')
           const ss = this.search
@@ -355,13 +309,12 @@ export default {
       this.searching()
     },
     async pendingmail() {
+      const url = `https://ofalooback.herokuapp.com/api/properties/agent/search/${
+        this.search
+      }/${this.$auth.loggedIn ? this.$auth.user.id : -1}`
+      // console.log(url)
       return await new Promise((resolve, reject) => {
-        resolve(
-          this.$axios.$get(
-            'https://ofalooback.herokuapp.com/api/properties/search/' +
-              this.search
-          )
-        )
+        resolve(this.$axios.$get(url))
       }).catch(() => {
         console.error("Oops, can't resolve your promise searching")
       })
@@ -372,6 +325,9 @@ export default {
     },
     searching() {
       this.inputfocused = false
+      if (this.search !== '') {
+        this.$emit('search', this.search)
+      }
     },
     autoff() {
       const myel = document.getElementById('byuyc')

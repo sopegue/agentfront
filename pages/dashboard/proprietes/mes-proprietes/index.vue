@@ -5,7 +5,7 @@
     </div>
     <div class="flex align-center space-x-3 border-b pb-2 justify-between">
       <div>
-        <searchbar></searchbar>
+        <searchbar :reinit="reinit" @search="ss"></searchbar>
       </div>
       <nuxt-link
         to="/dashboard/proprietes/mes-proprietes/new"
@@ -31,6 +31,28 @@
       </nuxt-link>
     </div>
     <div class="mt-2 flex flex-col justify-center border-b pb-2">
+      <div v-if="!loading && tot > 0" class="flex space-x-5 align-center pb-2">
+        <div class="flex align-center space-x-5">
+          <span class="logo-color size-13"
+            >{{ page === 1 ? 1 : (page * 15) / page + 1 }} -
+            {{ tot >= page * 15 ? page * 15 : tot }} sur
+            {{ tot }} resultat(s)<span v-if="search !== ''" class="size-13"
+              >, mot clé
+              <span class="font-semibold size-13">"{{ search }}"</span></span
+            ></span
+          >
+        </div>
+      </div>
+      <div v-else-if="tot <= 0" class="flex space-x-5 align-center pb-2">
+        <div class="flex align-center space-x-5">
+          <span class="logo-color size-13"
+            >0 résultats<span v-if="search !== ''" class="size-13"
+              >, mot clé
+              <span class="font-semibold size-13">"{{ search }}"</span></span
+            ></span
+          >
+        </div>
+      </div>
       <div
         class="flex align-center justify-between space-x-2 px-2 pb-2 rounded bg-white"
       >
@@ -71,12 +93,7 @@
             </button>
           </div>
         </div>
-        <div v-if="true" class="flex space-x-5 align-center">
-          <div class="flex align-center space-x-5">
-            <span class="logo-color size-13">1-18 sur 633 resultat</span>
-            <sortres :sort="sort" @res="res"></sortres>
-          </div>
-        </div>
+        <sortres :sort="sort" @res="res"></sortres>
       </div>
       <div class="flex align-center justify-center w-full flex-wrap">
         <optionadvanced
@@ -95,7 +112,7 @@
           :currencies="[
             'Ventes et locations',
             'Vente totale',
-            'Vente partiel',
+            'Vente partielle',
             'Location totale',
             'Location partielle',
           ]"
@@ -201,13 +218,28 @@
       </div>
     </div>
     <div class="mes-props">
-      <div class="flex flex-wrap">
+      <div v-if="loading" class="flex justify-center pt-15 pb-10">
+        <span>Chargement des propriétés...</span>
+      </div>
+      <div v-else-if="house.length" class="flex flex-wrap">
         <homeprop
-          :property="properties.data[0]"
+          v-for="(h, i) in house"
+          :key="i"
+          :property="h"
           class="column is-one-quarters"
         ></homeprop>
       </div>
-      <div class="my-3"><pagination></pagination></div>
+      <div v-else class="flex justify-center pt-15 pb-10">
+        <span>Aucun résultat.</span>
+      </div>
+      <div class="my-3">
+        <pagination
+          v-show="!loading && Math.ceil(tot / 15) > 1"
+          :curr="page"
+          :total="tot"
+          @page="paging"
+        ></pagination>
+      </div>
     </div>
     <!-- <span
       class="logo-color font-semibold size-15 block w-fit h-centers pt-20 pb-20"
@@ -226,18 +258,16 @@ import Searchbar from '~/components/search/Searchbar.vue'
 export default {
   components: { Searchbar, Sortres, Optionadvanced, Homeprop, Pagination },
   // middleware: 'prop',
-  async asyncData() {
-    const properties = await fetch(
-      'https://ofalooback.herokuapp.com/api/properties/bytype/Studio'
-    ).then((res) => res.json())
-    return { properties }
-  },
+
   data() {
     return {
       all,
       init: false,
+      properties: { data: [] },
       sort: '',
       old: '',
+      curr: 1,
+      total: 0,
       op: 0,
       bed: -1,
       p_min: -1,
@@ -248,6 +278,9 @@ export default {
       t_prop: [],
       t_carac: [],
       t_dispo: [],
+      load: false,
+      search: '',
+      irl: '/dashboard/proprietes/mes-proprietes?',
     }
   },
   computed: {
@@ -257,6 +290,15 @@ export default {
     size() {
       return this.$store.state.size
     },
+    house() {
+      return this.properties.data.length ? this.properties.data : []
+    },
+    page() {
+      return this.curr
+    },
+    tot() {
+      return this.total
+    },
     urlfrom() {
       return this.$store.state.url
     },
@@ -265,6 +307,9 @@ export default {
     },
     reinit() {
       return this.init === true
+    },
+    loading() {
+      return this.load === true
     },
   },
   watch: {
@@ -277,6 +322,12 @@ export default {
         this.p_max = -1
         this.s_min = -1
         this.s_max = -1
+        this.curr = 1
+        this.irl = '/dashboard/proprietes/mes-proprietes?'
+        this.$router.push(this.irl)
+        setTimeout(() => {
+          this.gone()
+        }, 10)
       }
     },
   },
@@ -293,14 +344,37 @@ export default {
     ) {
       this.sort = 'plus-recent'
     }
+    if (
+      this.$route.query.search &&
+      this.$route.query.search !== null &&
+      this.$route.query.search !== ''
+    ) {
+      if (!Array.isArray(this.$route.query.search)) {
+        this.search = this.$route.query.search.replace('--', ', ')
+      }
+    }
+    this.load = true
+    this.make()
   },
   methods: {
+    async fill() {
+      this.load = true
+      this.properties = await fetch(
+        'https://ofalooback.herokuapp.com/api/properties/bytype/Studio'
+      ).then((res) => res.json())
+
+      this.load = false
+    },
     initialiser() {
       this.init = true
     },
+    ss(val) {
+      this.irl = '/dashboard/proprietes/mes-proprietes?'
+      this.irl += 'search=' + val + '&'
+      this.gone()
+    },
     deal() {
       this.op++
-      console.log(this.op)
     },
     res(val) {
       this.sort = val
@@ -325,10 +399,19 @@ export default {
       if (val.length > 0) {
         this.t_dispo = val.slice(1)
       } else this.t_dispo = []
+      // console.log(this.t_dispo)
     },
     sizing(val) {
       this.s_min = val.min
       this.s_max = val.max
+    },
+    paging(val) {
+      this.make(val).then(() => {
+        setTimeout(() => {
+          this.scrolltop()
+          this.curr = val
+        }, 10)
+      })
     },
     price(val) {
       this.p_min = val.min
@@ -349,7 +432,33 @@ export default {
         this.bed = -1
       }
     },
+    async make(val = 1) {
+      const data = await this.$axios.$post(
+        'https://ofalooback.herokuapp.com/api/agent/properties/search?page=' +
+          val,
+        {
+          query: this.$route.query,
+          user: this.$auth.loggedIn ? this.$auth.user.id : -1,
+        }
+      )
+      this.load = false
+      if (data.data.length > 0) {
+        this.properties.data = data.data
+        this.total = data.meta.total
+      } else {
+        this.properties.data = []
+        this.total = 0
+      }
+    },
+    scrolltop() {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      })
+    },
     gone() {
+      this.load = true
       if (this.sort === '') {
         if (this.old === '') this.sort = 'plus-recent'
         else this.sort = this.old
@@ -357,7 +466,7 @@ export default {
         this.old = this.sort
       }
       // eslint-disable-next-line no-var
-      let url = '/dashboard/proprietes/mes-proprietes?tri=' + this.sort
+      let url = this.irl + 'tri=' + this.sort
       if (this.t_type.length > 0 && this.t_type.length < 4) {
         this.t_type.forEach((element) => {
           url += '&t_type=' + element.replace(/\s/g, '--')
@@ -373,7 +482,7 @@ export default {
           url += '&t_carac=' + element.replace(/\s/g, '--')
         })
       }
-      if (this.t_dispo.length > 0 && this.t_dispo.length < 2) {
+      if (this.t_dispo.length > 0) {
         this.t_dispo.forEach((element) => {
           url += '&t_dispo=' + element.replace(/\s/g, '--')
         })
@@ -395,8 +504,17 @@ export default {
       }
       this.$router.push(url)
       setTimeout(() => {
-        location.reload()
-      }, 100)
+        if (
+          this.$route.query.search &&
+          this.$route.query.search !== null &&
+          this.$route.query.search !== ''
+        ) {
+          if (!Array.isArray(this.$route.query.search)) {
+            this.search = this.$route.query.search.replace('--', ', ')
+          }
+        }
+        this.make()
+      }, 10)
     },
   },
 }

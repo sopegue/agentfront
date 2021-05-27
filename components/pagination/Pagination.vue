@@ -5,7 +5,7 @@
     >
       <button
         v-if="page > 1"
-        class="flex align-center space-x-1 bg-transparent border border-x008489 px-2 no-outlines rounded py-0.65"
+        class="flex align-center space-x-1 bg-transparent border border-x008489 px-2 no-outlines rounded py-0.5"
         :class="{
           'btn-008489': page > 1,
           'cursor-default': page <= 1,
@@ -31,7 +31,7 @@
           <button
             class="no-outlines pb-px rounded w-8x border border-x008489"
             :class="{
-              'bg-008489 btn-paginations': i === page,
+              'bg-008489 btn-paginations cursor-default': i === page,
               'btn-pagination': i !== page,
             }"
             @click="
@@ -51,7 +51,7 @@
               v-if="i <= 4 + page - 1"
               class="no-outlines pb-px rounded w-8x border border-x008489"
               :class="{
-                'bg-008489 btn-paginations': i === page,
+                'bg-008489 btn-paginations cursor-default': i === page,
                 'btn-pagination': i !== page,
               }"
               @click="
@@ -78,7 +78,7 @@
               v-if="Math.abs(i - pagination[pagination.length - 1]) < 2"
               class="no-outlines pb-px rounded w-8x border border-x008489"
               :class="{
-                'bg-008489 btn-paginations': i === page,
+                'bg-008489 btn-paginations cursor-default': i === page,
                 'btn-pagination': i !== page,
               }"
               @click="
@@ -106,7 +106,7 @@
               v-if="i === 1 || (i >= page - 1 && i <= page + 2)"
               class="no-outlines pb-px rounded w-8x border border-x008489"
               :class="{
-                'bg-008489 btn-paginations': i === page,
+                'bg-008489 btn-paginations cursor-default': i === page,
                 'btn-pagination': i !== page,
               }"
               @click="
@@ -127,7 +127,7 @@
               v-if="Math.abs(i - pagination[pagination.length - 1]) < 2"
               class="no-outlines pb-px rounded w-8x border border-x008489"
               :class="{
-                'bg-008489 btn-paginations': i === page,
+                'bg-008489 btn-paginations cursor-default': i === page,
                 'btn-pagination': i !== page,
               }"
               @click="
@@ -155,7 +155,7 @@
               v-if="i === 1 || i >= end"
               class="no-outlines pb-px rounded w-8x border border-x008489"
               :class="{
-                'bg-008489 btn-paginations': i === page,
+                'bg-008489 btn-paginations cursor-default': i === page,
                 'btn-pagination': i !== page,
               }"
               @click="
@@ -171,7 +171,7 @@
       </div>
       <button
         v-if="page < pagination[pagination.length - 1]"
-        class="flex align-center space-x-1 bg-transparent border border-x008489 px-4 no-outlines rounded py-0.65"
+        class="flex align-center space-x-1 bg-transparent border border-x008489 px-4 no-outlines rounded py-0.5"
         :class="{
           'btn-008489': page < pagination[pagination.length - 1],
           'cursor-default': page >= pagination[pagination.length - 1],
@@ -198,15 +198,34 @@
 
 <script>
 export default {
+  props: {
+    total: {
+      type: Number,
+      default: 0,
+    },
+    curr: {
+      type: Number,
+      default: 1,
+    },
+  },
   data() {
     return {
       current: 1,
-      pagination: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      pagination: [],
     }
   },
   computed: {
     page() {
+      return this.curr
+    },
+    cc() {
       return this.current
+    },
+    pp() {
+      return this.curr
+    },
+    tot() {
+      return this.total
     },
     size() {
       return this.$store.state.size
@@ -224,11 +243,23 @@ export default {
         this.hidecontent()
       }
     },
+    tot(newval, oldval) {
+      this.pagination = []
+      for (let index = 1; index <= Math.ceil(newval / 15); index++) {
+        this.pagination.push(index)
+      }
+    },
+    cc(newval, oldval) {
+      this.$emit('page', newval)
+    },
   },
   updated() {
     if (!this.loading) this.hidecontent()
   },
   mounted() {
+    for (let index = 1; index <= this.tot; index++) {
+      this.pagination.push(index)
+    }
     setInterval(() => {
       if (!this.loading) this.hidecontent()
     }, 1000)

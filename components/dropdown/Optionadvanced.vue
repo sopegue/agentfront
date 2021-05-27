@@ -326,13 +326,11 @@ export default {
       }
     },
     currency(newv, oldv) {
-      console.log('reinit')
       if (newv === this.currencies[0]) {
         this.checkedCateg = [this.currencies[0]]
       }
     },
     init(newv, oldv) {
-      console.log('reinit')
       if (newv) {
         this.currency = this.currencies[0]
         this.checkedCateg = [this.currencies[0]]

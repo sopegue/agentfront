@@ -123,11 +123,7 @@
           ></a
         >
       </div>
-      <nuxt-child
-        class="py-5 sm:px-1 px-4"
-        keep-alive
-        :keep-alive-props="{ max: 10 }"
-      />
+      <nuxt-child class="py-5 sm:px-1 px-4" />
     </div>
   </div>
 </template>

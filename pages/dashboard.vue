@@ -61,8 +61,8 @@
                 /></svg
               ><span class="text-white">Accueil</span></nuxt-link
             >
-            <nuxt-link
-              to="/dashboard/proprietes?tri=plus-recent"
+            <a
+              href="/dashboard/proprietes?tri=plus-recent"
               :class="{
                 'focuss ': curoute.includes('/dashboard/proprietes'),
               }"
@@ -81,7 +81,7 @@
                   fill="#fff"
                 />
               </svg>
-              <span class="text-white">Mes propriétés</span></nuxt-link
+              <span class="text-white">Mes propriétés</span></a
             >
             <nuxt-link
               to="/dashboard/statistiques"
@@ -340,11 +340,7 @@
                 curoute === '/dashboard/inbox/',
             }"
           >
-            <nuxt-child
-              keep-alive
-              :keep-alive-props="{ max: 10 }"
-              class="px-4 py-5 w-full h-full"
-            />
+            <nuxt-child class="px-4 py-5 w-full h-full" />
           </div>
           <footers
             v-if="

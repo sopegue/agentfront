@@ -193,7 +193,7 @@
           'px-4 py-4': size < 467,
         }"
       >
-        <nuxt-child keep-alive :keep-alive-props="{ max: 10 }" />
+        <nuxt-child />
       </div>
     </div>
   </div>

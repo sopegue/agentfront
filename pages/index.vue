@@ -3,11 +3,7 @@
     <div v-show="loading"></div>
     <div v-show="!loading" id="ofaloo" class="m-0-auto max-w-x1366">
       <headerhome></headerhome>
-      <nuxt-child
-        keep-alive
-        :keep-alive-props="{ max: 10 }"
-        class="lg:px-20 md:px-10 px-4"
-      />
+      <nuxt-child class="lg:px-20 md:px-10 px-4" />
       <footers></footers>
     </div>
   </div>
