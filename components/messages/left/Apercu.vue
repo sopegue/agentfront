@@ -3,7 +3,7 @@
     <div class="flex space-x-2">
       <figure class="image rounded-full relative is-40x40">
         <img
-          class="rounded-full is-40x40"
+          class="rounded-full is-40x40 border"
           src="https://ofaloo.blob.core.windows.net/ofaloo/8.jpg"
           alt="Placeholder image"
         />

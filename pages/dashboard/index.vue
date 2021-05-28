@@ -9,7 +9,7 @@
           >
             <figure class="image relative is-96x96 rounded-full">
               <img
-                class="rounded-full"
+                class="rounded-full border"
                 :src="
                   'https://ofaloo.blob.core.windows.net/ofaloo/' +
                   $auth.user.picture_link
