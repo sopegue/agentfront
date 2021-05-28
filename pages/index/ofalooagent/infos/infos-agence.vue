@@ -140,20 +140,11 @@
         </div>
         <div class="flex flex-col lg:w-1/3 md:w-2/5 sm:w-3/5 w-full">
           <label class="size-13 pb-0.3 block">Ville de l'agence</label>
-          <typeprop
+          <typepropv
             :placeholder="'Choisir une ville...'"
-            :content="[
-              'Abidjan',
-              'Yamoussoukro',
-              'Bouaké',
-              'Daloa',
-              'Korhogo',
-              'Gagnoa',
-              'Man',
-              'San-Pedro',
-            ]"
+            :content="town"
             @val="viller"
-          ></typeprop>
+          ></typepropv>
         </div>
         <div class="flex flex-col space-y-2 lg:w-1/3 md:w-2/5 sm:w-3/5 w-full">
           <div class="w-full">
@@ -201,13 +192,15 @@
 </template>
 <script>
 // import Delcountry from '~/components/dropdown/Delcountry.vue'
+import { ville } from '@/ville/ville'
 import Hasagence from '~/components/dropdown/Hasagence.vue'
 import Typegence from '~/components/dropdown/Typegence.vue'
-import Typeprop from '~/components/dropdown/Typeprop.vue'
+import Typepropv from '~/components/dropdown/Typepropv.vue'
 export default {
-  components: { Typegence, Hasagence, Typeprop },
+  components: { Typegence, Hasagence, Typepropv },
   data() {
     return {
+      town: ville,
       email: '',
       email_principal: '',
       name: '',
@@ -295,21 +288,21 @@ export default {
       if (this.$linker.isNumber(nv)) this.fiscal = nv
       else this.fiscal = ov
     },
-    phone(newval, oldval) {
-      this.unphoned = false
-      if (!newval.includes(' ')) {
-        if (
-          (newval.length === 1 && newval.lastIndexOf('+') === 0) ||
-          (newval.length > 1 &&
-            newval.lastIndexOf('+') === 0 &&
-            !isNaN(newval.substr(1, newval.length - 1)) &&
-            !newval.substr(1, newval.length - 1).includes('.')) ||
-          (!isNaN(newval) && !newval.includes('.'))
-        )
-          this.phone = newval
-        else this.phone = oldval
-      } else this.phone = oldval
-    },
+    // phone(newval, oldval) {
+    //   this.unphoned = false
+    //   if (!newval.includes(' ')) {
+    //     if (
+    //       (newval.length === 1 && newval.lastIndexOf('+') === 0) ||
+    //       (newval.length > 1 &&
+    //         newval.lastIndexOf('+') === 0 &&
+    //         !isNaN(newval.substr(1, newval.length - 1)) &&
+    //         !newval.substr(1, newval.length - 1).includes('.')) ||
+    //       (!isNaN(newval) && !newval.includes('.'))
+    //     )
+    //       this.phone = newval
+    //     else this.phone = oldval
+    //   } else this.phone = oldval
+    // },
     pwdcf(newval, oldval) {
       if (newval.length < this.pwd.length && this.didpwdunmatch) {
         this.notpwdok = false
@@ -318,6 +311,7 @@ export default {
   },
   beforeMount() {
     this.checkAgenceInfo()
+    console.log(this.ci)
   },
   methods: {
     viller(val) {

@@ -82,7 +82,7 @@
           <div>
             <label for="request" class="size-13">Pays de résidence</label>
             <br />
-            <delcountry @ctry="ctry"></delcountry>
+            <delcountryusauth @ctry="ctry"></delcountryusauth>
           </div>
         </div>
         <div class="flex flex-col space-y-2 lg:w-1/3 md:w-2/5 sm:w-3/5 w-full">
@@ -142,9 +142,9 @@
   </div>
 </template>
 <script>
-import Delcountry from '~/components/dropdown/Delcountry.vue'
+import Delcountryusauth from '~/components/dropdown/Delcountryusauth.vue'
 export default {
-  components: { Delcountry },
+  components: { Delcountryusauth },
   data() {
     return {
       nameerror: false,
@@ -193,27 +193,27 @@ export default {
       }
       this.infos.surname = nv
     },
-    phone(newval, oldval) {
-      if (!newval.includes(' ')) {
-        if (
-          (newval.length === 1 && newval.lastIndexOf('+') === 0) ||
-          (newval.length > 1 &&
-            newval.lastIndexOf('+') === 0 &&
-            !isNaN(newval.substr(1, newval.length - 1)) &&
-            !newval.substr(1, newval.length - 1).includes('.')) ||
-          (!isNaN(newval) && !newval.includes('.'))
-        ) {
-          this.infos.phone = newval
-          this.phone = newval
-        } else {
-          this.infos.phone = oldval
-          this.phone = oldval
-        }
-      } else {
-        this.infos.phone = oldval
-        this.phone = oldval
-      }
-    },
+    // phone(newval, oldval) {
+    //   if (!newval.includes(' ')) {
+    //     if (
+    //       (newval.length === 1 && newval.lastIndexOf('+') === 0) ||
+    //       (newval.length > 1 &&
+    //         newval.lastIndexOf('+') === 0 &&
+    //         !isNaN(newval.substr(1, newval.length - 1)) &&
+    //         !newval.substr(1, newval.length - 1).includes('.')) ||
+    //       (!isNaN(newval) && !newval.includes('.'))
+    //     ) {
+    //       this.infos.phone = newval
+    //       this.phone = newval
+    //     } else {
+    //       this.infos.phone = oldval
+    //       this.phone = oldval
+    //     }
+    //   } else {
+    //     this.infos.phone = oldval
+    //     this.phone = oldval
+    //   }
+    // },
   },
   beforeMount() {
     this.checkRegisterEmail()
