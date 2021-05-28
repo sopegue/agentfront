@@ -144,6 +144,26 @@
         </div>
         <div>
           <h4 class="logo-color size-14 font-semibold my-4 border-b pb-1">
+            Contact
+          </h4>
+          <div class="flex flex-col space-y-4">
+            <div>
+              <div class="w-max-128">
+                <label for="sizezt" class="size-13 pb-0.8 block"
+                  >Téléphone
+                </label>
+                <input
+                  id="sizezt"
+                  v-model="phone"
+                  type="tel"
+                  class="border w-full py-1 h-7 size-14 rounded no-outlines px-2"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4 class="logo-color size-14 font-semibold my-4 border-b pb-1">
             Prix
           </h4>
           <p
@@ -735,6 +755,7 @@ export default {
       infostaille: false,
       quittaille: true,
       type: '',
+      phone: '',
       taille: '',
       propos: '',
       partielle: '',
@@ -1021,6 +1042,11 @@ export default {
             ? ''
             : this.property.data.links.insta
 
+        this.phone =
+          this.property.data.property.phone === null
+            ? ''
+            : this.property.data.property.phone
+
         this.links.fb =
           this.property.data.links.fb === null
             ? ''
@@ -1150,6 +1176,7 @@ export default {
         form.append('taille', +this.taille)
         form.append('adresse', this.adresse)
         form.append('ville', this.ville)
+        form.append('phone', this.phone)
         form.append('cp', this.cp)
         form.append('proposition', this.propos)
         form.append('percentage_part', +this.partielle)
