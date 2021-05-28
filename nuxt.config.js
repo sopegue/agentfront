@@ -11,7 +11,17 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
-    script: [{ src: 'https://use.fontawesome.com/releases/v5.14.0/js/all.js' }],
+    script: [
+      { src: 'https://use.fontawesome.com/releases/v5.14.0/js/all.js' },
+      {
+        src:
+          'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js',
+        integrity:
+          'sha512-yadYcDSJyQExcKhjKSQOkBKy2BLDoW6WnnGXCAkCoRlpHGpYuVuBqGObf3g/TdB86sSbss1AOP4YlGSb6EKQPg==',
+        crossorigin: 'anonymous',
+        referrerpolicy: 'no-referrer',
+      },
+    ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/assets/css/pc.css' },

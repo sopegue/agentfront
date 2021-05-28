@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */ /* eslint-disable prefer-const */
 <template>
   <div>
     <div class="flex flex-col space-y-6 pb-5">
@@ -390,7 +391,7 @@
         </div>
       </div>
       <div
-        class="bg-white flex flex-col space-y-3 border rounded w-full h-128 px-6 py-5"
+        class="bg-white flex flex-col space-y-3 border rounded w-full h-fit px-6 py-5"
       >
         <div class="flex relative z-0 space-x-3 justify-between align-center">
           <div
@@ -426,7 +427,7 @@
                     daily = !daily
                   }
                 "
-                >Report par mois</a
+                >Report par semaine</a
               >
             </div>
           </div>
@@ -512,17 +513,8 @@
             </div>
           </div>
         </div>
-        <div class="h-full">
-          <div class="size-12 color-363636f over mb-0.5">
-            Visites (Messages)
-          </div>
-          <div class="w-fit h-fit both-centers -mt-12">
-            <div
-              class="size-24 relative z-0 font-semibold logo-color over flex align-center"
-            >
-              Bientôt disponible
-            </div>
-          </div>
+        <div>
+          <canvas id="myChart" width="400" height="145"></canvas>
         </div>
       </div>
     </div>
@@ -530,11 +522,13 @@
 </template>
 
 <script>
+import { config } from '@/chart/chart'
 import Sortprop from '~/components/dropdown/Sortprop.vue'
 export default {
   components: { Sortprop },
   data() {
     return {
+      config,
       infosmess: false,
       infosvisit: false,
       infosorigin: false,
@@ -582,6 +576,14 @@ export default {
   //   if (this.quitlive) this.infoslive = false
   //   if (this.quitorigin) this.infosorigin = false
   // },
+  mounted() {
+    console.log(this.config)
+    // eslint-disable-next-line no-undef
+    const myChart = new Chart(document.getElementById('myChart'), this.config)
+    setTimeout(() => {
+      myChart.update()
+    }, 500)
+  },
   methods: {
     show(val) {
       if (val === 'mess') this.quitmess = false

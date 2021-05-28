@@ -43,6 +43,10 @@ div {
   transform: translateX(-240px) !important;
   transition: transform ease 0.3s !important;
 }
+/* #myChart {
+  max-height: 360px !important;
+  min-height: 360px !important;
+} */
 .drawerh {
   transform: translateX(0) !important;
   transition: transform ease-out 0.3s !important;

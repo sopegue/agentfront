@@ -55,7 +55,7 @@
       </div>
       <div id="dropdown-menu" class="dropdown-menu z-20 walele" role="menu">
         <div class="dropdown-content bg-white border z-20 pt-1">
-          <div class="flex align-center justify-between">
+          <div class="flex align-center justify-between py-1">
             <span class="size-135 font-semibold dropdown-item">Mon compte</span>
             <nuxt-link
               v-show="$auth.user.agence.super === 'yes'"
