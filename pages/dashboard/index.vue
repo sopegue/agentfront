@@ -10,7 +10,10 @@
             <figure class="image relative is-96x96 rounded-full">
               <img
                 class="rounded-full"
-                src="https://ofaloo.blob.core.windows.net/ofaloo/4.jpg"
+                :src="
+                  'https://ofaloo.blob.core.windows.net/ofaloo/' +
+                  $auth.user.picture_link
+                "
                 alt="Placeholder image"
               />
             </figure>
