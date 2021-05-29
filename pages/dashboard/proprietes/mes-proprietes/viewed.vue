@@ -318,7 +318,7 @@
           </figure>
         </div>
       </div>
-      <div class="flex mt-4 border-b">
+      <div class="mt-4 border-b">
         <div class="w-full pb-4">
           <div class="flex align-center space-x-4 justify-between">
             <div>
@@ -507,6 +507,17 @@
                 >
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="mb-2 flex align-center space-x-3 justify-between">
+          <div>
+            <span class="color-363636 size-11"
+              >Modifiée le
+              {{
+                $moment(property.data.property.updated_at).format('LL')
+              }}</span
+            >
           </div>
         </div>
       </div>

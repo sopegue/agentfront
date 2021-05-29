@@ -386,12 +386,14 @@
         <div class="mt-2 flex align-center space-x-3 justify-between">
           <div>
             <span class="color-363636 size-11"
-              >Ajoutée
-              {{
-                $utility.dating(
-                  new Date($moment(property.property.created_at).format())
-                )
-              }}</span
+              >Ajoutée le
+              {{ $moment(property.property.created_at).format('LL') }}</span
+            >
+          </div>
+          <div>
+            <span class="color-363636 size-11"
+              >Modifiée le
+              {{ $moment(property.property.updated_at).format('LL') }}</span
             >
           </div>
         </div>
