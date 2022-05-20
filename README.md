@@ -1,6 +1,6 @@
 # ofaloo
 
-Admin dashboard website to manage properties hosted on ofaloo
+Admin dashboard website to manage properties hosted on [Ofaloo](https://github.com/sopegue/ofalooone/).
 
 ## Build Setup
 
