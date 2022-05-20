@@ -1,5 +1,7 @@
 # ofaloo
 
+Admin dashboard website to manage properties hosted on ofaloo
+
 ## Build Setup
 
 ```bash
