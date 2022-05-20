@@ -2,6 +2,10 @@
 
 Admin dashboard website to manage properties hosted on [Ofaloo](https://github.com/sopegue/ofalooone/).
 
+# demo site
+
+[Demo here](https://ofalooagent.netlify.app/).
+
 ## Build Setup
 
 ```bash
