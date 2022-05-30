@@ -110,7 +110,7 @@
       :class="{ 'space-x-5': size > 540, 'flex-col space-y-5': size <= 540 }"
     >
       <div class="w-fit mx-2 flex align-center space-x-1 size-14 text-white">
-        <span class="text-white">{{ toyear }}</span>
+        <span class="text-white">{{ toyear }}, Xunita</span>
         <span class="text-white">•</span>
         <a
           v-if="!curoute.includes('/dashboard')"
