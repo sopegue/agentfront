@@ -240,7 +240,7 @@ export default {
             if (res.data.status === 500) {
               this.logging = false
               this.err = true
-              console.log('Error on request')
+              console.log('Error on request' + res)
             }
           })
           .catch(() => {

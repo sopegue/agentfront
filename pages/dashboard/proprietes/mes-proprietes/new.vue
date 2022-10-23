@@ -755,8 +755,8 @@
 </template>
 
 <script>
-import { vindoor, voutdoor, venergy } from '@/options/options.js'
 import Editor from '@tinymce/tinymce-vue'
+import { vindoor, voutdoor, venergy } from '@/options/options.js'
 import Imgs from '~/components/amg/Imgs.vue'
 import Typeprop from '~/components/dropdown/Typeprop.vue'
 import Imgmodaled from '~/components/modal/Imgmodaled.vue'
@@ -1042,14 +1042,15 @@ export default {
             '/dashboard/proprietes/mes-proprietes/viewed?id=' + data.id
           )
         } else {
+          console.log(data)
           this.$store.commit('set_message', 'Désolé, une erreur est survenue')
           this.$store.commit('set_red', true)
           setTimeout(() => {
             this.$store.commit('set_red', false)
           }, 1800)
         }
-        this.store = false
       }
+      this.store = false
     },
     changeactive(val) {
       if (this.images.length > 0) {
